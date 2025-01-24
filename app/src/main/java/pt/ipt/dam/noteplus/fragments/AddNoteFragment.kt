@@ -1,4 +1,7 @@
 package pt.ipt.dam.noteplus.fragments
 
-class AddNoteFragment {
+import androidx.fragment.app.Fragment
+
+class AddNoteFragment : Fragment() {
+
 }
