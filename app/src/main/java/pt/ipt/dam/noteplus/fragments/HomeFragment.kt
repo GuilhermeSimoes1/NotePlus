@@ -1,22 +1,33 @@
 package pt.ipt.dam.noteplus.fragments
 
 import android.os.Bundle
-import android.view.View
+import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pt.ipt.dam.noteplus.R
 
-class HomeFragment : Fragment(R.layout.home_fragment){
-    private lateinit var navController: NavController
+@Suppress("DEPRECATION")
+class HomeFragment : Fragment(R.layout.home_fragment) {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        navController = findNavController()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        setHasOptionsMenu(true) // Adicione esta linha para habilitar o menu
+        return inflater.inflate(R.layout.home_fragment, container, false)
+    }
 
-        view.findViewById<FloatingActionButton>(R.id.addNoteButton).setOnClickListener {
-            navController.navigate(R.id.action_homeFragment_to_addNoteFragment)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_home, menu) // Infle o menu
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.searchMenu -> {
+                // Ação para buscar notas
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
