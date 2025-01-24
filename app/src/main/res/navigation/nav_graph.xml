@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="pt.ipt.dam.noteplus.fragments.HomeFragment"
-        android:label="Home">
+        android:label="Home"
+        tools:layout="@layout/home_fragment"
+        tools:context="pt.ipt.dam.noteplus.fragments.HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_addNoteFragment"
             app:destination="@id/addNoteFragment" />
@@ -18,21 +21,22 @@
     <fragment
         android:id="@+id/addNoteFragment"
         android:name="pt.ipt.dam.noteplus.fragments.AddNoteFragment"
-        android:label="Add Note" >
+        android:label="Add Note"
+        tools:layout="@layout/addnote_fragment"
+        tools:context="pt.ipt.dam.noteplus.fragments.AddNoteFragment">
         <action
             android:id="@+id/addNoteFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
-
     </fragment>
 
     <fragment
         android:id="@+id/editNoteFragment"
         android:name="pt.ipt.dam.noteplus.fragments.EditNoteFragment"
-        android:label="Edit Note" >
-
+        android:label="Edit Note"
+        tools:layout="@layout/editnote_fragment"
+        tools:context="pt.ipt.dam.noteplus.fragments.EditNoteFragment">
         <action
             android:id="@+id/editNoteFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
-
     </fragment>
 </navigation>
