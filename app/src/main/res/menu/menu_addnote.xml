@@ -4,6 +4,6 @@
 
     <item
         android:id="@+id/saveMenu"
-        android:title="Guardar"
-        app:showAsAction="always" />
+        android:title="@string/guardar"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Define o caminho para aceder aos arquivos no diretório de cache externo -->
+    <external-path name="external_files" path="." />
+</paths>

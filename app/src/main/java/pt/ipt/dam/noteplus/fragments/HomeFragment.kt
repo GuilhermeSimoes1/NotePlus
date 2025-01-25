@@ -1,15 +1,26 @@
 package pt.ipt.dam.noteplus.fragments
+
 import pt.ipt.dam.noteplus.adapter.NoteAdapter
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.view.*
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.launch
 import pt.ipt.dam.noteplus.R
+import pt.ipt.dam.noteplus.data.NoteDatabase
 
 @Suppress("DEPRECATION")
 class HomeFragment() : Fragment(R.layout.home_fragment), Parcelable {
+
+    private lateinit var noteAdapter: NoteAdapter
 
     constructor(parcel: Parcel) : this() {
     }
@@ -18,8 +29,44 @@ class HomeFragment() : Fragment(R.layout.home_fragment), Parcelable {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(true) // Adicione esta linha para habilitar o menu
+        setHasOptionsMenu(true) //linha para habilitar o menu
         return inflater.inflate(R.layout.home_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val addNoteButton = view.findViewById<FloatingActionButton>(R.id.addNoteButton)
+        addNoteButton.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_addNoteFragment)
+        }
+
+        // Configuração do RecyclerView
+        val recyclerView = view.findViewById<RecyclerView>(R.id.homeRecyclerView)
+        noteAdapter = NoteAdapter(mutableListOf()) // Definindo o adaptador
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = noteAdapter
+
+        // Carregar notas da base de dados
+        loadNotes()
+    }
+
+    private fun loadNotes() {
+        val db = NoteDatabase.getDatabase(requireContext())
+        lifecycleScope.launch {
+            val notes = db.noteDao().getAllNotes()
+            noteAdapter.updateNotes(notes)
+
+            // Exibir mensagem se não houver notas
+            val emptyNotesText = view?.findViewById<TextView>(R.id.emptyNotesText)
+            if (notes.isEmpty()) {
+                emptyNotesText?.visibility = View.VISIBLE
+                view?.findViewById<RecyclerView>(R.id.homeRecyclerView)?.visibility = View.GONE
+            } else {
+                emptyNotesText?.visibility = View.GONE
+                view?.findViewById<RecyclerView>(R.id.homeRecyclerView)?.visibility = View.VISIBLE
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
