@@ -1,12 +1,9 @@
 package pt.ipt.dam.noteplus.fragments
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
-import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -16,13 +13,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import pt.ipt.dam.noteplus.R
 import pt.ipt.dam.noteplus.data.NoteDatabase
@@ -35,17 +32,18 @@ import java.util.Locale
 
 @Suppress("DEPRECATION")
 class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
-
     private var noteId: Int? = null
     private lateinit var noteTitle: EditText
     private lateinit var noteDesc: EditText
     private lateinit var noteImageView: ImageView
-    private lateinit var playAudioButton: Button
-    private var mediaRecorder: MediaRecorder? = null
-    private var mediaPlayer: MediaPlayer? = null
-    private var audioFile: File? = null
     private var imageFile: File? = null
-    private var isRecording = false
+    private var mediaPlayer: MediaPlayer? = null
+    private lateinit var playAudioButton: Button
+    private lateinit var backToHomeButton: Button
+    private var audioFilePath: String? = null
+    private var originalTitle: String? = null
+    private var originalDescription: String? = null
+    private var originalImagePath: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,10 +60,10 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         noteTitle = view.findViewById(R.id.editNoteTitle)
         noteDesc = view.findViewById(R.id.editNoteDesc)
         noteImageView = view.findViewById(R.id.noteImageView)
-        playAudioButton = view.findViewById(R.id.playAudioButton)
-
+        playAudioButton = view.findViewById(R.id.playAudioButton) // Inicialize o botão de reprodução de áudio
+        backToHomeButton = view.findViewById(R.id.backToHomeButton)
         // Configurar o FAB (Floating Action Button) para salvar as alterações
-        val editNoteFab = view.findViewById<Button>(R.id.editNoteFab)
+        val editNoteFab = view.findViewById<FloatingActionButton>(R.id.editNoteFab)
         editNoteFab.setOnClickListener {
             Log.d("EditNoteFragment", "Botão editNoteFab clicado")
             updateNote() // Chama a função para atualizar a nota
@@ -76,18 +74,18 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
             takePhoto()
         }
 
-        // Configurar o botão de gravação de áudio
-        view.findViewById<Button>(R.id.recordAudioButton).setOnClickListener {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.RECORD_AUDIO), 1)
-            } else {
-                toggleRecording()
-            }
-        }
-
         // Configurar o botão de reprodução de áudio
         playAudioButton.setOnClickListener {
             playAudio()
+        }
+
+        // Configurar o botão de voltar à homepage
+        backToHomeButton.setOnClickListener {
+            if (hasChanges()) {
+                showDiscardChangesDialog()
+            } else {
+                findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
+            }
         }
 
         // Obter o ID da nota passada como argumento
@@ -105,16 +103,21 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
                 val note = db.noteDao().getNoteById(it)
                 noteTitle.setText(note.title)
                 noteDesc.setText(note.description)
+                originalTitle = note.title
+                originalDescription = note.description
+                originalImagePath = note.imagePath
                 // Carregar imagem se existir
                 note.imagePath?.let { path ->
                     imageFile = File(path)
                     noteImageView.setImageBitmap(BitmapFactory.decodeFile(path))
                     noteImageView.visibility = View.VISIBLE
                 }
-                // Carregar áudio se existir
-                note.audioPath?.let { path ->
-                    audioFile = File(path)
+                // Configurar a visibilidade do botão de reprodução de áudio
+                if (note.audioPath != null) {
+                    audioFilePath = note.audioPath
                     playAudioButton.visibility = View.VISIBLE
+                } else {
+                    playAudioButton.visibility = View.GONE
                 }
             }
         }
@@ -164,8 +167,8 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
             id = noteId!!,
             title = title,
             description = description,
-            imagePath = imageFile?.absolutePath, // Atualize com o caminho da imagem
-            audioPath = audioFile?.absolutePath  // Atualize com o caminho do áudio
+            imagePath = imageFile?.absolutePath,
+            audioPath = audioFilePath
         )
 
         val db = NoteDatabase.getDatabase(requireContext())
@@ -178,58 +181,6 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
             } catch (e: Exception) {
                 Log.e("EditNoteFragment", "Erro ao atualizar a nota", e)
                 Toast.makeText(requireContext(), "Erro ao atualizar a nota", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun toggleRecording() {
-        if (isRecording) {
-            stopRecording()
-        } else {
-            startRecording()
-        }
-    }
-
-    private fun startRecording() {
-        audioFile = File(requireContext().externalCacheDir?.absolutePath + "/audiorecordtest.3gp")
-        mediaRecorder = MediaRecorder().apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            setOutputFile(audioFile?.absolutePath)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-            try {
-                prepare()
-                start()
-                isRecording = true
-                Toast.makeText(requireContext(), "Gravação iniciada", Toast.LENGTH_SHORT).show()
-            } catch (e: IOException) {
-                e.printStackTrace()
-                Toast.makeText(requireContext(), "Erro ao iniciar gravação", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun stopRecording() {
-        mediaRecorder?.apply {
-            stop()
-            release()
-            isRecording = false
-            Toast.makeText(requireContext(), "Gravação finalizada", Toast.LENGTH_SHORT).show()
-            playAudioButton.visibility = View.VISIBLE
-        }
-        mediaRecorder = null
-    }
-
-    private fun playAudio() {
-        mediaPlayer = MediaPlayer().apply {
-            try {
-                setDataSource(audioFile?.absolutePath)
-                prepare()
-                start()
-                Toast.makeText(requireContext(), "Reproduzindo áudio", Toast.LENGTH_SHORT).show()
-            } catch (e: IOException) {
-                e.printStackTrace()
-                Toast.makeText(requireContext(), "Erro ao reproduzir áudio", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -259,6 +210,20 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         }
     }
 
+    private fun playAudio() {
+        mediaPlayer = MediaPlayer().apply {
+            try {
+                setDataSource(audioFilePath)
+                prepare()
+                start()
+                Toast.makeText(requireContext(), "Reproduzindo áudio", Toast.LENGTH_SHORT).show()
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Erro ao reproduzir áudio", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -279,5 +244,26 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
                 findNavController().popBackStack()
             }
         }
+    }
+
+    private fun hasChanges(): Boolean {
+        val currentTitle = noteTitle.text.toString()
+        val currentDescription = noteDesc.text.toString()
+        val currentImagePath = imageFile?.absolutePath
+        return currentTitle != originalTitle || currentDescription != originalDescription || currentImagePath != originalImagePath
+    }
+
+
+    private fun showDiscardChangesDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Descartar alterações?")
+        builder.setMessage("Você tem alterações que não foram guardadas. Deseja descartá-las e voltar à homepage?")
+        builder.setPositiveButton("Descartar") { _, _ ->
+            findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
+        }
+        builder.setNegativeButton("Continuar a editar") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.show()
     }
 }

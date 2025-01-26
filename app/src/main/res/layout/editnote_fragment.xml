@@ -53,35 +53,39 @@
             android:visibility="gone" />
 
         <Button
-            android:id="@+id/takePhotoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tirar Foto"
-            android:drawableEnd="@drawable/cam"
-            android:layout_below="@id/noteImageView"
-            android:layout_marginTop="16dp"
-            android:layout_alignParentEnd="true" />
-
-        <Button
-            android:id="@+id/recordAudioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gravar Áudio"
-            android:drawableEnd="@drawable/micro"
-            android:layout_below="@id/noteImageView"
-            android:layout_marginTop="16dp"
-            android:layout_toStartOf="@id/takePhotoButton"
-            android:layout_alignParentStart="true" />
-
-        <Button
             android:id="@+id/playAudioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ouvir Áudio"
             android:drawableEnd="@drawable/audio"
-            android:layout_below="@id/recordAudioButton"
+            android:layout_below="@id/noteImageView"
             android:layout_marginTop="16dp"
             android:layout_alignParentStart="true"
             android:visibility="gone" />
+
+        <Button
+            android:id="@+id/backToHomeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Voltar"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="20dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/editNoteFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:backgroundTint="@color/purple"
+            android:tintMode="@color/white"
+            android:src="@drawable/done"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="editFab" />
+
     </RelativeLayout>
 </layout>

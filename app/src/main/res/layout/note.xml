@@ -19,11 +19,9 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/noteTitle"
-                android:layout_weight="200"
                 android:textColor="@color/purple"
-                android:fontFamily=""
                 android:text="Titulo"
                 android:textStyle="bold"
                 android:textSize="18sp"/>
@@ -36,8 +34,16 @@
                 android:maxHeight="170dp"
                 android:text="Descrição"
                 android:textSize="14sp"
-                android:fontFamily=""
                 android:textColor="@color/purple"/>
+
+            <ImageView
+                android:id="@+id/noteImageView"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                android:contentDescription="Foto da Nota" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

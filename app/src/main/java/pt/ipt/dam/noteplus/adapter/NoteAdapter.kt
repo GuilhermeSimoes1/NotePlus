@@ -1,7 +1,9 @@
 package pt.ipt.dam.noteplus.adapter
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +35,7 @@ class NoteAdapter(
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val noteTitle: TextView = itemView.findViewById(R.id.noteTitle)
         val noteDesc: TextView = itemView.findViewById(R.id.noteDesc)
+        val noteImageView: ImageView = itemView.findViewById(R.id.noteImageView)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.note, parent, false)
@@ -42,6 +45,14 @@ class NoteAdapter(
         val note = notes[position]
         holder.noteTitle.text = note.title
         holder.noteDesc.text = note.description
+
+        if (note.imagePath != null) {
+            holder.noteImageView.visibility = View.VISIBLE
+            holder.noteImageView.setImageBitmap(BitmapFactory.decodeFile(note.imagePath))
+        } else {
+            holder.noteImageView.visibility = View.GONE
+        }
+
         holder.itemView.setOnClickListener {
             onNoteClick(note)
         }
