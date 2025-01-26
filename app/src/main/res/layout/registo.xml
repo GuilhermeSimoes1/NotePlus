@@ -9,24 +9,13 @@
         tools:context=".RegisterFragment"
         android:padding="12dp">
 
-        <!-- Logo da app -->
-        <ImageView
-            android:id="@+id/appLogo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/logo"
-            android:contentDescription="Logo da App" />
-
         <TextView
             android:id="@+id/registerHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/appLogo"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="100dp"
             android:text="Registo"
             android:textColor="@color/purple"
             android:textSize="35sp"
@@ -35,8 +24,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/registerHeading"
-            android:layout_marginTop="24dp"
+            android:layout_centerInParent="true"
             android:orientation="vertical">
 
             <EditText
@@ -80,18 +68,6 @@
                 android:text="Registar"
                 android:layout_gravity="center"
                 android:layout_marginTop="35dp" />
-
-            <TextView
-                android:id="@+id/registerLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Já tem uma conta? Clique aqui"
-                android:textColor="@color/purple"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:clickable="true"
-                android:focusable="true" />
-
         </LinearLayout>
     </RelativeLayout>
 </layout>

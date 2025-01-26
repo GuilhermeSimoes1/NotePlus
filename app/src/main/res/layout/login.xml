@@ -10,36 +10,22 @@
         tools:context=".LoginFragment"
         android:padding="12dp">
 
-        <!-- Logo da aplicação -->
-        <ImageView
-            android:id="@+id/appLogo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            app:srcCompat="@drawable/logo"
-            android:contentDescription="Logo da aplicação" />
-
-        <!-- Título "Login" -->
         <TextView
             android:id="@+id/loginHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/appLogo"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="150dp"
             android:text="Login"
             android:textStyle="bold"
             android:textColor="@color/purple"
             android:textSize="35sp" />
 
-        <!-- Formulário de Login -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/loginHeading"
-            android:layout_marginTop="24dp"
+            android:layout_centerInParent="true"
             android:orientation="vertical">
 
             <EditText
@@ -71,17 +57,18 @@
                 android:text="Login"
                 android:layout_gravity="center"
                 android:layout_marginTop="35dp" />
-
-            <TextView
-                android:id="@+id/registerLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Não tem uma conta? Registe-se aqui"
-                android:textColor="@color/purple"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:clickable="true"
-                android:focusable="true" />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="121dp"
+            android:layout_height="98dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="143dp"
+            android:layout_marginEnd="135dp"
+            android:layout_marginBottom="640dp"
+            app:srcCompat="@drawable/logo" />
     </RelativeLayout>
 </layout>
