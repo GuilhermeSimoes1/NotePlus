@@ -33,7 +33,7 @@
         <EditText
             android:id="@+id/editNoteDesc"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Escreva uma descrição"
             android:gravity="top"
             android:padding="12dp"

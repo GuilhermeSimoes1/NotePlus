@@ -1,4 +1,5 @@
 package pt.ipt.dam.noteplus.fragments
+
 import pt.ipt.dam.noteplus.adapter.NoteAdapter
 import android.os.Bundle
 import android.os.Parcel
@@ -16,11 +17,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import pt.ipt.dam.noteplus.R
 import pt.ipt.dam.noteplus.data.NoteDatabase
+import pt.ipt.dam.noteplus.model.Note
+
 @Suppress("DEPRECATION")
 class HomeFragment() : Fragment(R.layout.home_fragment), Parcelable {
     private lateinit var noteAdapter: NoteAdapter
+    private var allNotes: List<Note> = listOf()
+
     constructor(parcel: Parcel) : this() {
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,6 +34,7 @@ class HomeFragment() : Fragment(R.layout.home_fragment), Parcelable {
         setHasOptionsMenu(true) //linha para habilitar o menu
         return inflater.inflate(R.layout.home_fragment, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val addNoteButton = view.findViewById<FloatingActionButton>(R.id.addNoteButton)
@@ -47,14 +54,15 @@ class HomeFragment() : Fragment(R.layout.home_fragment), Parcelable {
         // Carregar notas da base de dados
         loadNotes()
     }
+
     private fun loadNotes() {
         val db = NoteDatabase.getDatabase(requireContext())
         lifecycleScope.launch {
-            val notes = db.noteDao().getAllNotes()
-            noteAdapter.updateNotes(notes)
+            allNotes = db.noteDao().getAllNotes()
+            noteAdapter.updateNotes(allNotes)
             // Exibir mensagem se não houver notas
             val emptyNotesText = view?.findViewById<TextView>(R.id.emptyNotesText)
-            if (notes.isEmpty()) {
+            if (allNotes.isEmpty()) {
                 emptyNotesText?.visibility = View.VISIBLE
                 view?.findViewById<RecyclerView>(R.id.homeRecyclerView)?.visibility = View.GONE
             } else {
@@ -63,40 +71,65 @@ class HomeFragment() : Fragment(R.layout.home_fragment), Parcelable {
             }
         }
     }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_home, menu) // Infle o menu
         val searchItem = menu.findItem(R.id.searchMenu)
         val searchView = searchItem.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // Lógica para pesquisar as notas
                 return false
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
-                // Lógica para atualizar a pesquisa em tempo real
-                return false
+                filterNotes(newText)
+                return true
             }
         })
         super.onCreateOptionsMenu(menu, inflater)
     }
+
+    private fun filterNotes(query: String?) {
+        val filteredNotes = if (query.isNullOrEmpty()) {
+            allNotes
+        } else {
+            allNotes.filter {
+                it.title.contains(query, ignoreCase = true) || it.description.contains(query, ignoreCase = true)
+            }
+        }
+        noteAdapter.updateNotes(filteredNotes)
+        // Exibir mensagem se não houver notas
+        val emptyNotesText = view?.findViewById<TextView>(R.id.emptyNotesText)
+        if (filteredNotes.isEmpty()) {
+            emptyNotesText?.visibility = View.VISIBLE
+            view?.findViewById<RecyclerView>(R.id.homeRecyclerView)?.visibility = View.GONE
+        } else {
+            emptyNotesText?.visibility = View.GONE
+            view?.findViewById<RecyclerView>(R.id.homeRecyclerView)?.visibility = View.VISIBLE
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.searchMenu -> {
-                // Ação para encontrar as notas
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
     }
+
     override fun describeContents(): Int {
         return 0
     }
+
     companion object CREATOR : Parcelable.Creator<HomeFragment> {
         override fun createFromParcel(parcel: Parcel): HomeFragment {
             return HomeFragment(parcel)
         }
+
         override fun newArray(size: Int): Array<HomeFragment?> {
             return arrayOfNulls(size)
         }
