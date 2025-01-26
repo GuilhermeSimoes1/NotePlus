@@ -3,6 +3,8 @@ package pt.ipt.dam.noteplus.data
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
+import androidx.room.Delete
 import pt.ipt.dam.noteplus.model.Note
 
 @Dao
@@ -15,4 +17,10 @@ interface NoteDao {
 
     @Query("SELECT * FROM notes")
     suspend fun getAllNotes(): List<Note>
+
+    @Update
+    suspend fun update(note: Note)
+
+    @Query("DELETE FROM notes WHERE id = :id")
+    suspend fun delete(id: Int)
 }
