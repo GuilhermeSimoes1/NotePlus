@@ -1,14 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="12dp"
-        tools:context=".UpdateNoteFragment">
+        tools:context=".EditNoteFragment"
+        android:padding="12dp">
 
         <TextView
             android:id="@+id/editNoteHeading"
@@ -16,7 +13,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="16dp"
-            android:fontFamily=""
             android:text="Editar nota"
             android:textStyle="bold"
             android:textColor="@color/purple"
@@ -32,8 +28,7 @@
             android:layout_below="@id/editNoteHeading"
             android:background="@drawable/purple_border"
             android:layout_marginTop="16dp"
-            android:maxLines="1"
-            android:fontFamily=""/>
+            android:maxLines="1" />
 
         <EditText
             android:id="@+id/editNoteDesc"
@@ -43,10 +38,19 @@
             android:gravity="top"
             android:padding="12dp"
             android:textSize="18sp"
-            android:fontFamily=""
             android:background="@drawable/purple_border"
             android:layout_below="@id/editNoteTitle"
             android:layout_marginTop="12dp" />
+
+        <ImageView
+            android:id="@+id/noteImageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/editNoteDesc"
+            android:layout_marginTop="16dp"
+            android:contentDescription="Foto da Nota"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/editNoteFab"
