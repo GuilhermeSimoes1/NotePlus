@@ -1,34 +1,51 @@
 package pt.ipt.dam.noteplus.fragments
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.media.MediaPlayer
+import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import pt.ipt.dam.noteplus.R
 import pt.ipt.dam.noteplus.data.NoteDatabase
 import pt.ipt.dam.noteplus.model.Note
 import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Suppress("DEPRECATION")
 class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
+
     private var noteId: Int? = null
     private lateinit var noteTitle: EditText
     private lateinit var noteDesc: EditText
     private lateinit var noteImageView: ImageView
+    private lateinit var playAudioButton: Button
+    private var mediaRecorder: MediaRecorder? = null
+    private var mediaPlayer: MediaPlayer? = null
+    private var audioFile: File? = null
     private var imageFile: File? = null
+    private var isRecording = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,9 +62,10 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         noteTitle = view.findViewById(R.id.editNoteTitle)
         noteDesc = view.findViewById(R.id.editNoteDesc)
         noteImageView = view.findViewById(R.id.noteImageView)
+        playAudioButton = view.findViewById(R.id.playAudioButton)
 
         // Configurar o FAB (Floating Action Button) para salvar as alterações
-        val editNoteFab = view.findViewById<FloatingActionButton>(R.id.editNoteFab)
+        val editNoteFab = view.findViewById<Button>(R.id.editNoteFab)
         editNoteFab.setOnClickListener {
             Log.d("EditNoteFragment", "Botão editNoteFab clicado")
             updateNote() // Chama a função para atualizar a nota
@@ -56,6 +74,20 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         // Configurar o ImageView para tirar uma nova foto
         noteImageView.setOnClickListener {
             takePhoto()
+        }
+
+        // Configurar o botão de gravação de áudio
+        view.findViewById<Button>(R.id.recordAudioButton).setOnClickListener {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.RECORD_AUDIO), 1)
+            } else {
+                toggleRecording()
+            }
+        }
+
+        // Configurar o botão de reprodução de áudio
+        playAudioButton.setOnClickListener {
+            playAudio()
         }
 
         // Obter o ID da nota passada como argumento
@@ -78,6 +110,11 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
                     imageFile = File(path)
                     noteImageView.setImageBitmap(BitmapFactory.decodeFile(path))
                     noteImageView.visibility = View.VISIBLE
+                }
+                // Carregar áudio se existir
+                note.audioPath?.let { path ->
+                    audioFile = File(path)
+                    playAudioButton.visibility = View.VISIBLE
                 }
             }
         }
@@ -128,7 +165,7 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
             title = title,
             description = description,
             imagePath = imageFile?.absolutePath, // Atualize com o caminho da imagem
-            audioPath = null  // Atualize se necessário
+            audioPath = audioFile?.absolutePath  // Atualize com o caminho do áudio
         )
 
         val db = NoteDatabase.getDatabase(requireContext())
@@ -145,11 +182,65 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         }
     }
 
+    private fun toggleRecording() {
+        if (isRecording) {
+            stopRecording()
+        } else {
+            startRecording()
+        }
+    }
+
+    private fun startRecording() {
+        audioFile = File(requireContext().externalCacheDir?.absolutePath + "/audiorecordtest.3gp")
+        mediaRecorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            setOutputFile(audioFile?.absolutePath)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            try {
+                prepare()
+                start()
+                isRecording = true
+                Toast.makeText(requireContext(), "Gravação iniciada", Toast.LENGTH_SHORT).show()
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Erro ao iniciar gravação", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun stopRecording() {
+        mediaRecorder?.apply {
+            stop()
+            release()
+            isRecording = false
+            Toast.makeText(requireContext(), "Gravação finalizada", Toast.LENGTH_SHORT).show()
+            playAudioButton.visibility = View.VISIBLE
+        }
+        mediaRecorder = null
+    }
+
+    private fun playAudio() {
+        mediaPlayer = MediaPlayer().apply {
+            try {
+                setDataSource(audioFile?.absolutePath)
+                prepare()
+                start()
+                Toast.makeText(requireContext(), "Reproduzindo áudio", Toast.LENGTH_SHORT).show()
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Erro ao reproduzir áudio", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    @SuppressLint("QueryPermissionsNeeded")
     private fun takePhoto() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        // Cria o arquivo de imagem
-        imageFile = File(requireContext().externalCacheDir?.absolutePath + "/photo.jpg")
+        // Cria o arquivo de imagem com um nome único
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        imageFile = File(requireContext().externalCacheDir?.absolutePath + "/photo_$timeStamp.jpg")
 
         // Usar FileProvider para criar um URI seguro
         val photoURI: Uri = FileProvider.getUriForFile(

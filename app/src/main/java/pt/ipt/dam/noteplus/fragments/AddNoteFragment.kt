@@ -29,6 +29,9 @@ import pt.ipt.dam.noteplus.data.NoteDatabase
 import pt.ipt.dam.noteplus.model.Note
 import java.io.File
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Suppress("DEPRECATION")
 class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
@@ -189,8 +192,9 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
     private fun takePhoto() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        // Cria o arquivo de imagem
-        imageFile = File(requireContext().externalCacheDir?.absolutePath + "/photo.jpg")
+        // Cria o arquivo de imagem com um nome único
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        imageFile = File(requireContext().externalCacheDir?.absolutePath + "/photo_$timeStamp.jpg")
 
         // Usar FileProvider para criar um URI seguro
         val photoURI: Uri = FileProvider.getUriForFile(
