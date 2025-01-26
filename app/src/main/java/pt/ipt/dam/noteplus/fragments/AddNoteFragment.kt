@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
@@ -33,9 +34,11 @@ import java.io.IOException
 class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
 
     private var mediaRecorder: MediaRecorder? = null
+    private var mediaPlayer: MediaPlayer? = null
     private var audioFile: File? = null
     private var imageFile: File? = null
     private lateinit var noteImageView: ImageView
+    private lateinit var playAudioButton: Button
     private var isRecording = false
 
     override fun onCreateView(
@@ -45,6 +48,7 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
         val view = inflater.inflate(R.layout.addnote_fragment, container, false)
 
         noteImageView = view.findViewById(R.id.noteImageView)
+        playAudioButton = view.findViewById(R.id.playAudioButton)
 
         view.findViewById<Button>(R.id.recordAudioButton).setOnClickListener {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
@@ -64,6 +68,10 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
 
         noteImageView.setOnClickListener {
             takePhoto()
+        }
+
+        playAudioButton.setOnClickListener {
+            playAudio()
         }
 
         setHasOptionsMenu(true) // Adicione esta linha para habilitar o menu
@@ -158,8 +166,23 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
             release()
             isRecording = false
             Toast.makeText(requireContext(), "Gravação finalizada", Toast.LENGTH_SHORT).show()
+            playAudioButton.visibility = View.VISIBLE
         }
         mediaRecorder = null
+    }
+
+    private fun playAudio() {
+        mediaPlayer = MediaPlayer().apply {
+            try {
+                setDataSource(audioFile?.absolutePath)
+                prepare()
+                start()
+                Toast.makeText(requireContext(), "Reproduzindo áudio", Toast.LENGTH_SHORT).show()
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Erro ao reproduzir áudio", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     @SuppressLint("QueryPermissionsNeeded")
@@ -200,5 +223,7 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
     override fun onDestroy() {
         super.onDestroy()
         stopRecording()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 }
