@@ -36,6 +36,7 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
     private var audioFile: File? = null
     private var imageFile: File? = null
     private lateinit var noteImageView: ImageView
+    private var isRecording = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +50,7 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.RECORD_AUDIO), 1)
             } else {
-                startRecording()
+                toggleRecording()
             }
         }
 
@@ -124,6 +125,14 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
         }
     }
 
+    private fun toggleRecording() {
+        if (isRecording) {
+            stopRecording()
+        } else {
+            startRecording()
+        }
+    }
+
     private fun startRecording() {
         audioFile = File(requireContext().externalCacheDir?.absolutePath + "/audiorecordtest.3gp")
         mediaRecorder = MediaRecorder().apply {
@@ -133,10 +142,13 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
             setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
             try {
                 prepare()
+                start()
+                isRecording = true
+                Toast.makeText(requireContext(), "Gravação iniciada", Toast.LENGTH_SHORT).show()
             } catch (e: IOException) {
                 e.printStackTrace()
+                Toast.makeText(requireContext(), "Erro ao iniciar gravação", Toast.LENGTH_SHORT).show()
             }
-            start()
         }
     }
 
@@ -144,6 +156,8 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
         mediaRecorder?.apply {
             stop()
             release()
+            isRecording = false
+            Toast.makeText(requireContext(), "Gravação finalizada", Toast.LENGTH_SHORT).show()
         }
         mediaRecorder = null
     }
