@@ -10,41 +10,57 @@
         app:cardElevation="6dp"
         app:cardCornerRadius="10dp">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@drawable/purple_border"
-            android:padding="16dp">
+            android:layout_height="match_parent">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/noteTitle"
-                android:textColor="@color/purple"
-                android:text="Titulo"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
+                android:orientation="vertical"
+                android:background="@drawable/purple_border"
+                android:padding="16dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/noteDesc"
-                android:layout_marginTop="8dp"
-                android:maxHeight="170dp"
-                android:text="Descrição"
-                android:textSize="14sp"
-                android:textColor="@color/purple"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/noteTitle"
+                    android:textColor="@color/purple"
+                    android:text="Titulo"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
 
-            <ImageView
-                android:id="@+id/noteImageView"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginTop="8dp"
-                android:scaleType="fitCenter"
-                android:visibility="gone"
-                android:contentDescription="Foto da Nota" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/noteDesc"
+                    android:layout_marginTop="8dp"
+                    android:maxHeight="170dp"
+                    android:text="Descrição"
+                    android:textSize="14sp"
+                    android:textColor="@color/purple"/>
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/noteImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="8dp"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    android:contentDescription="Foto da Nota" />
+
+            </LinearLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/doneButton"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="12dp"
+                app:srcCompat="@drawable/done"
+                android:contentDescription="Marcar como concluído"
+                app:backgroundTint="@color/purple" />
+        </FrameLayout>
+
     </androidx.cardview.widget.CardView>
 </layout>

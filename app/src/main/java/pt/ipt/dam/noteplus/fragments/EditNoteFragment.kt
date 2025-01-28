@@ -22,8 +22,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import pt.ipt.dam.noteplus.R
-import pt.ipt.dam.noteplus.data.NoteDatabase
+import pt.ipt.dam.noteplus.data.NoteRepository
 import pt.ipt.dam.noteplus.data.SessionManager
+import pt.ipt.dam.noteplus.data.SheetyApi
 import pt.ipt.dam.noteplus.model.Note
 import java.io.File
 import java.io.IOException
@@ -87,6 +88,8 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
             } else {
                 findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
             }
+
+
         }
 
         // Obter o ID da nota passada como argumento
@@ -97,28 +100,44 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         loadNote()
     }
 
+
+    private val repository by lazy {
+        NoteRepository(SheetyApi.service)
+    }
+
     private fun loadNote() {
-        val db = NoteDatabase.getDatabase(requireContext())
         lifecycleScope.launch {
-            noteId?.let {
-                val note = db.noteDao().getNoteById(it)
-                noteTitle.setText(note.title)
-                noteDesc.setText(note.description)
-                originalTitle = note.title
-                originalDescription = note.description
-                originalImagePath = note.imagePath
-                // Carregar imagem se existir
-                note.imagePath?.let { path ->
-                    imageFile = File(path)
-                    noteImageView.setImageBitmap(BitmapFactory.decodeFile(path))
-                    noteImageView.visibility = View.VISIBLE
-                }
-                // Configurar a visibilidade do botão de reprodução de áudio
-                if (note.audioPath != null) {
-                    audioFilePath = note.audioPath
-                    playAudioButton.visibility = View.VISIBLE
-                } else {
-                    playAudioButton.visibility = View.GONE
+            noteId?.let { id ->
+                try {
+                    val notes = repository.getNotesForUser(SessionManager.userId ?: 0)
+                    val note = notes.find { it.id == id }
+                    if (note != null) {
+                        noteTitle.setText(note.title)
+                        noteDesc.setText(note.description)
+                        originalTitle = note.title
+                        originalDescription = note.description
+                        originalImagePath = note.imagePath
+
+                        // Carregar imagem se existir
+                        note.imagePath?.let { path ->
+                            imageFile = File(path)
+                            noteImageView.setImageBitmap(BitmapFactory.decodeFile(path))
+                            noteImageView.visibility = View.VISIBLE
+                        }
+
+                        // Configurar a visibilidade do botão de reprodução de áudio
+                        if (!note.audioPath.isNullOrEmpty()) {
+                            audioFilePath = note.audioPath
+                            playAudioButton.visibility = View.VISIBLE
+                        } else {
+                            playAudioButton.visibility = View.GONE
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "Nota não encontrada", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    Log.e("EditNoteFragment", "Erro ao carregar nota", e)
+                    Toast.makeText(requireContext(), "Erro ao carregar nota", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -149,12 +168,6 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         val title = noteTitle.text.toString()
         val description = noteDesc.text.toString()
 
-        if (noteId == null) {
-            Log.e("EditNoteFragment", "ID da nota está nulo. Não é possível atualizar.")
-            Toast.makeText(requireContext(), "Erro interno: Nota inválida", Toast.LENGTH_SHORT).show()
-            return
-        }
-
         if (title.isEmpty() || description.isEmpty()) {
             Toast.makeText(
                 requireContext(),
@@ -166,18 +179,17 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
 
         val note = Note(
             id = noteId!!,
-            userId = SessionManager.userId ?: 0, // Certifique-se de que o userId não é nulo
+            userId = SessionManager.userId ?: 0,
             title = title,
             description = description,
             imagePath = imageFile?.absolutePath,
             audioPath = audioFilePath
         )
 
-        val db = NoteDatabase.getDatabase(requireContext())
         lifecycleScope.launch {
             try {
-                Log.d("EditNoteFragment", "Atualizando nota: $note")
-                db.noteDao().update(note)
+                Log.d("EditNoteFragment", "Atualizando nota via NoteRepository: $note")
+                repository.updateNoteInSheety(note)
                 Toast.makeText(requireContext(), "Nota atualizada com sucesso", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             } catch (e: Exception) {
@@ -238,12 +250,17 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
     }
 
     private fun deleteNote() {
-        val db = NoteDatabase.getDatabase(requireContext())
+
         lifecycleScope.launch {
-            noteId?.let {
-                db.noteDao().delete(it)
-                Toast.makeText(requireContext(), "Nota apagada com sucesso", Toast.LENGTH_SHORT).show()
-                findNavController().popBackStack()
+            try {
+                noteId?.let {
+                    SheetyApi.service.deleteNote(it)
+                    Toast.makeText(requireContext(), "Nota apagada com sucesso", Toast.LENGTH_SHORT).show()
+                    findNavController().popBackStack()
+                }
+            } catch (e: Exception) {
+                Log.e("EditNoteFragment", "Erro ao apagar a nota", e)
+                Toast.makeText(requireContext(), "Erro ao apagar a nota", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -259,7 +276,7 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
     private fun showDiscardChangesDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Descartar alterações?")
-        builder.setMessage("Você tem alterações que não foram guardadas. Deseja descartá-las e voltar à homepage?")
+        builder.setMessage("Você tem alterações que não foram guardadas. Deseja descartá-las e voltar à página inicial?")
         builder.setPositiveButton("Descartar") { _, _ ->
             findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
         }

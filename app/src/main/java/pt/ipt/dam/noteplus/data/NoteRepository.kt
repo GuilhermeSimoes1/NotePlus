@@ -22,6 +22,8 @@ class NoteRepository(private val sheetyService: SheetyService) {
 
     suspend fun updateNoteInSheety(note: Note) {
         val noteRequest = SheetyService.NoteRequest(note)
-        sheetyService.updateNote(note.id, noteRequest)
+        note.id?.let { sheetyService.updateNote(it, noteRequest) }
     }
+
+
 }

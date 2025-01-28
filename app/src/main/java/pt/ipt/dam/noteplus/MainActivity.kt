@@ -25,9 +25,9 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        // Navegar para o HomeFragment
+        // Navegar para o loginFragment
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
         val navController = navHostFragment.navController
-        navController.navigate(R.id.homeFragment)
+        navController.navigate(R.id.loginFragment)
     }
 }

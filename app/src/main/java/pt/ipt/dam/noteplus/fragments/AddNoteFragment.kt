@@ -22,10 +22,8 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import pt.ipt.dam.noteplus.R
-
 import pt.ipt.dam.noteplus.data.NoteRepository
 import pt.ipt.dam.noteplus.data.SessionManager
 import pt.ipt.dam.noteplus.data.SheetyApi
@@ -80,7 +78,7 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
             playAudio()
         }
 
-        setHasOptionsMenu(true) // Adicione esta linha para habilitar o menu
+        setHasOptionsMenu(true)
 
         return view
     }

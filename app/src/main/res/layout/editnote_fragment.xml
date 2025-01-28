@@ -82,7 +82,7 @@
             android:clickable="true"
             android:backgroundTint="@color/purple"
             android:tintMode="@color/white"
-            android:src="@drawable/done"
+            android:src="@drawable/edit"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:contentDescription="editFab" />

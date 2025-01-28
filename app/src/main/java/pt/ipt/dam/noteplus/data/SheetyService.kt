@@ -8,6 +8,9 @@ import retrofit2.http.*
 
 interface SheetyService {
 
+
+    //::::::::::::EndPoints das notas::::::::::://
+
     // Classe de resposta para GET de notas
     data class NotesResponse(
         val notes: List<Note>
@@ -27,12 +30,18 @@ interface SheetyService {
     @PUT("notes/{id}")
     suspend fun updateNote(@Path("id") id: Int, @Body noteRequest: NoteRequest): Note
 
-    // Classe de resposta para GET de usuários
+    @DELETE("notes/{id}")
+    suspend fun deleteNote(@Path("id") id: Int)
+
+
+    //::::::::::::EndPoints dos utilizadores::::::::::://
+
+    // Classe de resposta para GET de utilizadores
     data class UserResponse(
         val users: List<User>
     )
 
-    // Classe de requisição para POST de usuários
+    // Classe de requisição para POST de utilizadores
     data class UserRequest(
         val user: User
     )
