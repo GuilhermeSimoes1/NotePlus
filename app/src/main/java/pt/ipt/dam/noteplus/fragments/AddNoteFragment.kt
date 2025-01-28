@@ -84,14 +84,14 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_addnote, menu) // Infle o menu
+        inflater.inflate(R.menu.menu_addnote, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.saveMenu -> {
-                saveNote() // Chame o método para salvar a nota
+                saveNote()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -103,12 +103,12 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
         val description = view?.findViewById<EditText>(R.id.addNoteDesc)?.text.toString()
 
         if (title.isEmpty() || description.isEmpty()) {
-            Toast.makeText(requireContext(), "Título e descrição não podem estar vazios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "O Título e a descrição não podem estar vazios!!", Toast.LENGTH_SHORT).show()
             return
         }
 
         val userId = SessionManager.userId ?: run {
-            Toast.makeText(requireContext(), "Usuário não logado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Utilizador não logado, por favor reinicie a aplicação!!", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -120,14 +120,16 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
             imagePath = imageFile?.absolutePath
         )
 
+
         val repository = NoteRepository(SheetyApi.service)
         lifecycleScope.launch {
             try {
                 repository.createNoteInSheety(note)
+                Toast.makeText(requireContext(), "Nota criada com sucesso!!",Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             } catch (e: Exception) {
                 e.printStackTrace()
-                Toast.makeText(requireContext(), "Erro ao guardar a nota", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Erro ao guardar a nota :(", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -195,7 +197,7 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
         // Usar FileProvider para criar um URI seguro
         val photoURI: Uri = FileProvider.getUriForFile(
             requireContext(),
-            "pt.ipt.dam.noteplus.fileprovider", // Nome do seu provider no AndroidManifest
+            "pt.ipt.dam.noteplus.fileprovider",
             imageFile!!
         )
 

@@ -7,4 +7,6 @@
     <string name="sem_conta">Não tem uma conta? Registe-se aqui</string>
     <string name="logo">Logo da aplicação</string>
     <string name="nome">Nome</string>
+    <string name="registo_realizado_com_sucesso">Registo realizado com sucesso!</string>
+    <string name="erro_ao_fazer_o_registo">Erro ao fazer o registo: %1$s</string>
 </resources>

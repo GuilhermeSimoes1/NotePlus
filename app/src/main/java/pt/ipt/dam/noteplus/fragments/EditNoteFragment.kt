@@ -150,11 +150,6 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.saveMenu -> {
-                Log.d("EditNoteFragment", "Save menu item clicked")
-                updateNote()
-                true
-            }
             R.id.deleteMenu -> {
                 Log.d("EditNoteFragment", "Delete menu item clicked")
                 deleteNote()
@@ -188,9 +183,9 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
 
         lifecycleScope.launch {
             try {
-                Log.d("EditNoteFragment", "Atualizando nota via NoteRepository: $note")
+                Log.d("EditNoteFragment", "A atualizar a nota via NoteRepository: $note")
                 repository.updateNoteInSheety(note)
-                Toast.makeText(requireContext(), "Nota atualizada com sucesso", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Nota atualizada com sucesso!!", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             } catch (e: Exception) {
                 Log.e("EditNoteFragment", "Erro ao atualizar a nota", e)
@@ -230,7 +225,7 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
                 setDataSource(audioFilePath)
                 prepare()
                 start()
-                Toast.makeText(requireContext(), "Reproduzindo áudio", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "A reproduzir o áudio", Toast.LENGTH_SHORT).show()
             } catch (e: IOException) {
                 e.printStackTrace()
                 Toast.makeText(requireContext(), "Erro ao reproduzir áudio", Toast.LENGTH_SHORT).show()
@@ -261,6 +256,7 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
             } catch (e: Exception) {
                 Log.e("EditNoteFragment", "Erro ao apagar a nota", e)
                 Toast.makeText(requireContext(), "Erro ao apagar a nota", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
             }
         }
     }

@@ -60,7 +60,10 @@
             android:drawableEnd="@drawable/cam"
             android:layout_below="@id/noteImageView"
             android:layout_marginTop="16dp"
-            android:layout_alignParentEnd="true" />
+            android:backgroundTint="@color/purple"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/rounded_ripple_button_background"
+            android:layout_marginStart="16dp"/>
 
         <Button
             android:id="@+id/recordAudioButton"
@@ -70,8 +73,11 @@
             android:drawableEnd="@drawable/micro"
             android:layout_below="@id/noteImageView"
             android:layout_marginTop="16dp"
+            android:backgroundTint="@color/purple"
             android:layout_toStartOf="@id/takePhotoButton"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:background="@drawable/rounded_ripple_button_background"
+            android:layout_marginEnd="16dp"/>
 
         <Button
             android:id="@+id/playAudioButton"
@@ -80,8 +86,10 @@
             android:text="Ouvir Áudio"
             android:drawableEnd="@drawable/audio"
             android:layout_below="@id/recordAudioButton"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="40dp"
+            android:backgroundTint="@color/purple"
             android:layout_alignParentStart="true"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:background="@drawable/rounded_ripple_button_background"/>
     </RelativeLayout>
 </layout>

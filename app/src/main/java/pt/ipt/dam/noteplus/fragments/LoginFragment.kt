@@ -52,7 +52,7 @@ class LoginFragment : Fragment(R.layout.login) {
                     SessionManager.userId = user.id
                     SessionManager.username = user.username
                     SessionManager.saveUserSession(requireContext())
-
+                    Toast.makeText(requireContext(), "Login bem sucedido!!", Toast.LENGTH_SHORT).show()
                     // Navegar para o HomeFragment
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 } else {

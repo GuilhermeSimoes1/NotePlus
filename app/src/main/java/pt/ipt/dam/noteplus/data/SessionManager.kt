@@ -21,13 +21,5 @@ object SessionManager {
         username = sharedPref.getString("USERNAME", null)
     }
 
-    fun clearUserSession(context: Context) {
-        userId = null
-        username = null
-        val sharedPref = context.getSharedPreferences("UserSession", Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            clear()
-            apply()
-        }
-    }
+
 }

@@ -32,6 +32,13 @@ class RegistoFragment : Fragment(R.layout.registo) {
         registerButton.setOnClickListener {
             val username = view.findViewById<TextView>(R.id.registerNome).text.toString()
             val password = view.findViewById<TextView>(R.id.registerPassword).text.toString()
+            val confPassword = view.findViewById<TextView>(R.id.registerConfirmPassword).text.toString()
+
+            if (password != confPassword) {
+                Toast.makeText(requireContext(), "As senhas não coincidem", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             registerUser(username, password)
         }
 
@@ -48,10 +55,13 @@ class RegistoFragment : Fragment(R.layout.registo) {
         lifecycleScope.launch {
             try {
                 repository.createUser(user)
+                Toast.makeText(requireContext(),
+                    getString(R.string.registo_realizado_com_sucesso), Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
             } catch (e: Exception) {
                 e.printStackTrace()
-                Toast.makeText(requireContext(), "Erro ao registrar o utilizador: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    getString(R.string.erro_ao_fazer_o_registo, e.message), Toast.LENGTH_SHORT).show()
             }
         }
     }

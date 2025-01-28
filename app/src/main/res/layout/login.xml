@@ -70,7 +70,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/login"
                 android:layout_gravity="center"
-                android:layout_marginTop="35dp" />
+                android:layout_marginTop="35dp"
+                android:backgroundTint="@color/purple"
+                android:background="@drawable/rounded_ripple_button_background" />
 
             <TextView
                 android:id="@+id/registerLink"

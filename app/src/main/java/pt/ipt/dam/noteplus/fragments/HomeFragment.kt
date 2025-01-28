@@ -99,13 +99,14 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
             noteAdapter.removeNoteAt(noteIndex)
             allNotes = allNotes.filter { it.id != noteId }
         }
+        filterNotes(currentSearchQuery)
     }
 
     private fun deleteNote(noteId: Int) {
         lifecycleScope.launch {
             try {
                 SheetyApi.service.deleteNote(noteId)
-                Toast.makeText(requireContext(), "Nota apagada com sucesso", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Parabéns por concluir esta nota!!", Toast.LENGTH_SHORT).show()
                 deleteNoteLocal(noteId) // Atualizar localmente após exclusão bem-sucedida
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Erro ao apagar a nota", Toast.LENGTH_SHORT).show()
@@ -136,7 +137,12 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+
+    private var currentSearchQuery: String? = null
+
     private fun filterNotes(query: String?) {
+
+        currentSearchQuery = query
         val filteredNotes = if (query.isNullOrEmpty()) {
             allNotes
         } else {
