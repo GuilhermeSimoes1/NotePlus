@@ -40,10 +40,10 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/registerEmail"
+                android:id="@+id/registerNome"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:hint="Email"
+                android:hint="@string/nome"
                 android:padding="12dp"
                 android:textSize="20sp"
                 android:background="@drawable/purple_border"

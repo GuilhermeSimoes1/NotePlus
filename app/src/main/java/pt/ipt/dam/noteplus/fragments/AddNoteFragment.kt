@@ -25,7 +25,10 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import pt.ipt.dam.noteplus.R
-import pt.ipt.dam.noteplus.data.NoteDatabase
+
+import pt.ipt.dam.noteplus.data.NoteRepository
+import pt.ipt.dam.noteplus.data.SessionManager
+import pt.ipt.dam.noteplus.data.SheetyApi
 import pt.ipt.dam.noteplus.model.Note
 import java.io.File
 import java.io.IOException
@@ -100,38 +103,33 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
     private fun saveNote() {
         val title = view?.findViewById<EditText>(R.id.addNoteTitle)?.text.toString()
         val description = view?.findViewById<EditText>(R.id.addNoteDesc)?.text.toString()
+
         if (title.isEmpty() || description.isEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                "Título e descrição não podem estar vazios",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(requireContext(), "Título e descrição não podem estar vazios", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val userId = SessionManager.userId ?: run {
+            Toast.makeText(requireContext(), "Usuário não logado", Toast.LENGTH_SHORT).show()
             return
         }
 
         val note = Note(
+            userId = userId,
             title = title,
             description = description,
             audioPath = audioFile?.absolutePath,
             imagePath = imageFile?.absolutePath
         )
 
-        val gson = Gson()
-        val noteJson = gson.toJson(note) // Converte o objeto Note para JSON
-
-        val db = NoteDatabase.getDatabase(requireContext())
+        val repository = NoteRepository(SheetyApi.service)
         lifecycleScope.launch {
             try {
-                db.noteDao().insert(note)  // Insere a nota na base de dados
-                val navController = findNavController()
-                navController.previousBackStackEntry?.savedStateHandle?.set(
-                    "new_note_json",
-                    noteJson
-                ) // Armazena como String JSON
-                navController.popBackStack()
+                repository.createNoteInSheety(note)
+                findNavController().popBackStack()
             } catch (e: Exception) {
-                e.printStackTrace()  // Imprime o erro no Logcat
-                Toast.makeText(requireContext(), "Erro ao salvar nota", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Erro ao guardar a nota", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class Note(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    val userId: Int,
     val title: String,
     val description: String,
     val audioPath: String?,

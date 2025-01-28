@@ -19,7 +19,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             app:srcCompat="@drawable/logo"
-            android:contentDescription="Logo da aplicação" />
+            android:contentDescription="@string/logo" />
 
         <!-- Título "Login" -->
         <TextView
@@ -34,7 +34,7 @@
             android:textColor="@color/purple"
             android:textSize="35sp" />
 
-        <!-- Formulário de Login -->
+        <!-- Formulário do Login -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,10 +43,10 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/loginEmail"
+                android:id="@+id/loginNome"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:hint="Email"
+                android:hint="@string/nome_login"
                 android:padding="12dp"
                 android:textSize="20sp"
                 android:background="@drawable/purple_border"
@@ -56,7 +56,7 @@
                 android:id="@+id/loginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:hint="Password"
+                android:hint="@string/password_login"
                 android:padding="12dp"
                 android:textSize="20sp"
                 android:background="@drawable/purple_border"
@@ -68,7 +68,7 @@
                 android:id="@+id/loginButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login"
+                android:text="@string/login"
                 android:layout_gravity="center"
                 android:layout_marginTop="35dp" />
 
@@ -76,7 +76,7 @@
                 android:id="@+id/registerLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Não tem uma conta? Registe-se aqui"
+                android:text="@string/sem_conta"
                 android:textColor="@color/purple"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"

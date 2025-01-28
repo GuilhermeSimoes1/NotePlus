@@ -6,6 +6,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -17,6 +18,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import pt.ipt.dam.noteplus.R
 import pt.ipt.dam.noteplus.data.NoteDatabase
+import pt.ipt.dam.noteplus.data.NoteRepository
+import pt.ipt.dam.noteplus.data.SessionManager
+import pt.ipt.dam.noteplus.data.SheetyApi
 import pt.ipt.dam.noteplus.model.Note
 
 @Suppress("DEPRECATION")
@@ -56,18 +60,30 @@ class HomeFragment() : Fragment(R.layout.home_fragment), Parcelable {
     }
 
     private fun loadNotes() {
-        val db = NoteDatabase.getDatabase(requireContext())
+        val repository = NoteRepository(SheetyApi.service)
+        val userId = SessionManager.userId ?: run {
+            Toast.makeText(requireContext(), "Utilizador não logado", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         lifecycleScope.launch {
-            allNotes = db.noteDao().getAllNotes()
-            noteAdapter.updateNotes(allNotes)
-            // Exibir mensagem se não houver notas
-            val emptyNotesText = view?.findViewById<TextView>(R.id.emptyNotesText)
-            if (allNotes.isEmpty()) {
-                emptyNotesText?.visibility = View.VISIBLE
-                view?.findViewById<RecyclerView>(R.id.homeRecyclerView)?.visibility = View.GONE
-            } else {
-                emptyNotesText?.visibility = View.GONE
-                view?.findViewById<RecyclerView>(R.id.homeRecyclerView)?.visibility = View.VISIBLE
+            try {
+                val userNotes = repository.getNotesForUser(userId)
+                noteAdapter.updateNotes(userNotes)
+                // Atualizar a visibilidade do texto de "sem notas"
+                val emptyNotesText = view?.findViewById<TextView>(R.id.emptyNotesText)
+                if (userNotes.isEmpty()) {
+                    emptyNotesText?.visibility = View.VISIBLE
+                    view?.findViewById<RecyclerView>(R.id.homeRecyclerView)?.visibility = View.GONE
+                } else {
+                    emptyNotesText?.visibility = View.GONE
+                    view?.findViewById<RecyclerView>(R.id.homeRecyclerView)?.visibility =
+                        View.VISIBLE
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Erro ao carregar notas", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

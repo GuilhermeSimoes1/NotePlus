@@ -32,7 +32,10 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+mssql = "com.microsoft.sqlserver:mssql-jdbc:9.2.1.jre8"
 
+retro = "com.squareup.retrofit2:retrofit:2.9.0"
+retroGson = "com.squareup.retrofit2:converter-gson:2.9.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

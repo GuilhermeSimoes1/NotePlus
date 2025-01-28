@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import pt.ipt.dam.noteplus.R
 import pt.ipt.dam.noteplus.model.Note
+
+
+
 class NoteAdapter(
     private var notes: List<Note>,
     private val onNoteClick: (Note) -> Unit

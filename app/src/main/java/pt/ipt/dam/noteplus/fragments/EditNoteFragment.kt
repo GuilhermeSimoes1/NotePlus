@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import pt.ipt.dam.noteplus.R
 import pt.ipt.dam.noteplus.data.NoteDatabase
+import pt.ipt.dam.noteplus.data.SessionManager
 import pt.ipt.dam.noteplus.model.Note
 import java.io.File
 import java.io.IOException
@@ -165,6 +166,7 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
 
         val note = Note(
             id = noteId!!,
+            userId = SessionManager.userId ?: 0, // Certifique-se de que o userId não é nulo
             title = title,
             description = description,
             imagePath = imageFile?.absolutePath,

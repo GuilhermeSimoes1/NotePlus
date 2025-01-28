@@ -63,5 +63,8 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
     implementation(libs.androidx.room.ktx)
     implementation(libs.gson)
+    implementation(libs.mssql)
+    implementation(libs.retro)
+    implementation(libs.retroGson)
 
 }

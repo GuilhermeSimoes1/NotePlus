@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.NavHostFragment
+import pt.ipt.dam.noteplus.data.SessionManager
 
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SessionManager.loadUserSession(this)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 

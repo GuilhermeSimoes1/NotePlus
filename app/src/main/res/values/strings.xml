@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">NotePlus</string>
     <string name="guardar">Guardar</string>
+    <string name="nome_login">Nome</string>
+    <string name="password_login">Password</string>
+    <string name="login">Login</string>
+    <string name="sem_conta">Não tem uma conta? Registe-se aqui</string>
+    <string name="logo">Logo da aplicação</string>
+    <string name="nome">Nome</string>
 </resources>
