@@ -108,7 +108,7 @@ interface SheetyService {
  * Objeto para configurar e fornecer o serviço Sheety.
  */
 object SheetyApi {
-    private const val BASE_URL = "https://api.sheety.co/56ba2a79dee0c3ec8ff723f94e7d5f51/notePlus/"
+    private const val BASE_URL = "https://api.sheety.co/8e8aa717d5b287e401de88d171fe8df3/notePlus/"
 
     /**
      * Instância do serviço Sheety.

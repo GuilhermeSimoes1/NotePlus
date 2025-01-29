@@ -92,7 +92,7 @@
             android:clickable="true"
             android:focusable="true"
             android:backgroundTint="@color/purple"
-            android:text="Guardar as alterações"
+            android:text="@string/guardar_as_altera_es"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:background="@drawable/rounded_ripple_button_background" />

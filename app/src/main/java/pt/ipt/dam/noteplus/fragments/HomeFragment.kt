@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -60,6 +62,28 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         recyclerView.adapter = noteAdapter
 
         loadNotes()
+
+        // Intercepta o botão de voltar para exibir um alerta de confirmação
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showExitConfirmation()
+            }
+        })
+    }
+
+
+    /**
+     * Exibe um diálogo de confirmação ao pressionar "voltar" na homepage.
+     */
+    private fun showExitConfirmation() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Sair da aplicação")
+            .setMessage("Quer fechar a aplicação?")
+            .setPositiveButton("Sim") { _, _ ->
+                requireActivity().finish()
+            }
+            .setNegativeButton("Não", null)
+            .show()
     }
 
     /**

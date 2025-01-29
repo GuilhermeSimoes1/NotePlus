@@ -34,6 +34,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * Fragmento para adicionar uma nova nota.
+ */
+
 @Suppress("DEPRECATION")
 class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
 
@@ -104,6 +108,9 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
         }
     }
 
+    /**
+     * Guarda a nota no repositório.
+     */
     private fun saveNote() {
         val title = view?.findViewById<EditText>(R.id.addNoteTitle)?.text.toString()
         val description = view?.findViewById<EditText>(R.id.addNoteDesc)?.text.toString()
@@ -140,6 +147,11 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
         }
     }
 
+    /**
+     * Alterna entre iniciar e parar a gravação de áudio.
+     *
+     * @param playAudioButton Botão para reprodução de áudio que será ativado quando a gravação for concluída.
+     */
     private fun toggleRecording() {
         if (isRecording) {
             stopRecording()
@@ -148,6 +160,11 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
         }
     }
 
+    /**
+     * Para a gravação de áudio e ativa o botão de reprodução.
+     *
+     * @param playAudioButton Botão para reprodução de áudio que será ativado.
+     */
     private fun startRecording() {
         audioFile = File(requireContext().externalCacheDir?.absolutePath + "/audiorecordtest.3gp")
         mediaRecorder = MediaRecorder().apply {
@@ -159,7 +176,7 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
                 prepare()
                 start()
                 isRecording = true
-                Toast.makeText(requireContext(), "Gravação iniciada", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Gravação iniciada, clique novamente no botão para parar", Toast.LENGTH_LONG).show()
             } catch (e: IOException) {
                 e.printStackTrace()
                 Toast.makeText(requireContext(), "Erro ao iniciar gravação", Toast.LENGTH_SHORT).show()
@@ -167,6 +184,9 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
         }
     }
 
+    /**
+     * Para a gravação de áudio.
+     */
     private fun stopRecording() {
         mediaRecorder?.apply {
             stop()
@@ -178,6 +198,10 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
         mediaRecorder = null
     }
 
+
+    /**
+     * Reproduz o áudio gravado.
+     */
     private fun playAudio() {
         mediaPlayer = MediaPlayer().apply {
             try {
@@ -192,6 +216,11 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
         }
     }
 
+    /**
+     * Abre a câmara para capturar uma foto.
+     *
+     * @param noteImageView ImageView onde a foto será exibida.
+     */
     @SuppressLint("QueryPermissionsNeeded")
     private fun takePhoto() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)

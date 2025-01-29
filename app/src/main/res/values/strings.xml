@@ -37,4 +37,7 @@
     <string name="logo_da_app">Logo da App</string>
     <string name="j_tem_uma_conta_clique_aqui">Já tem uma conta? Clique aqui</string>
     <string name="registar">Registar</string>
+    <string name="guardar_altera_es">Guardar alterações</string>
+    <string name="guardar_nota_add">Guardar Nota</string>
+    <string name="guardar_as_altera_es">Guardar as alterações</string>
 </resources>

@@ -31,6 +31,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+
+/**
+ * Fragmento para editar uma nota existente.
+ */
+
 @Suppress("DEPRECATION")
 class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
     private var noteId: Int? = null
@@ -107,6 +112,10 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         NoteRepository(SheetyApi.service)
     }
 
+
+    /**
+     * Carrega os dados da nota do repositório e preenche os campos.
+     */
     private fun loadNote() {
         lifecycleScope.launch {
             noteId?.let { id ->
@@ -161,6 +170,9 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         }
     }
 
+    /**
+     * Atualiza os dados da nota no servidor.
+     */
     private fun updateNote() {
         val title = noteTitle.text.toString()
         val description = noteDesc.text.toString()
@@ -196,6 +208,10 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         }
     }
 
+
+    /**
+     * Inicia a câmara para capturar uma nova foto.
+     */
     @SuppressLint("QueryPermissionsNeeded")
     private fun takePhoto() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -221,6 +237,10 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         }
     }
 
+
+    /**
+     * Reproduz o áudio gravado associado à nota.
+     */
     private fun playAudio() {
         mediaPlayer = MediaPlayer().apply {
             try {
@@ -246,6 +266,9 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         }
     }
 
+    /**
+     * Elimina a nota através do seu ID com o serviço SheetyApi.
+     */
     private fun deleteNote() {
 
         lifecycleScope.launch {
@@ -263,6 +286,9 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         }
     }
 
+    /**
+     * Verifica se há alterações não guardadas na nota.
+     */
     private fun hasChanges(): Boolean {
         val currentTitle = noteTitle.text.toString()
         val currentDescription = noteDesc.text.toString()
@@ -271,6 +297,9 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
     }
 
 
+    /**
+     * Mostra um diálogo para confirmar se o utilizador deseja descartar as alterações.
+     */
     private fun showDiscardChangesDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Descartar alterações?")

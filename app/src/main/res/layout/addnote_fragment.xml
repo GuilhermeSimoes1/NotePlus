@@ -1,118 +1,125 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".AddNoteFragment"
-        android:padding="12dp">
+        android:layout_height="match_parent">
 
-        <!-- Texto do cabeçalho para adicionar nota -->
-        <TextView
-            android:id="@+id/addNoteHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
-            android:text="@string/adicionar_nota"
-            android:textStyle="bold"
-            android:textColor="@color/purple"
-            android:textSize="24sp" />
-
-        <!-- Campo de entrada para o título da nota -->
-        <EditText
-            android:id="@+id/addNoteTitle"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="@string/escreva_um_t_tulo"
+            android:layout_height="match_parent"
             android:padding="12dp"
-            android:textSize="20sp"
-            android:layout_below="@id/addNoteHeading"
-            android:background="@drawable/purple_border"
-            android:layout_marginTop="16dp"
-            android:maxLines="1" />
+            android:clipToPadding="false"
+            tools:context=".AddNoteFragment">
 
-        <!-- Campo de entrada para a descrição da nota -->
-        <EditText
-            android:id="@+id/addNoteDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/escreva_uma_descri_o"
-            android:gravity="top"
-            android:padding="12dp"
-            android:textSize="18sp"
-            android:background="@drawable/purple_border"
-            android:layout_below="@id/addNoteTitle"
-            android:layout_marginTop="12dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <!-- Imagem da nota -->
-        <ImageView
-            android:id="@+id/noteImageView"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@id/addNoteDesc"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@string/foto_da_nota"
-            android:scaleType="centerCrop"
-            android:visibility="gone" />
+                <TextView
+                    android:id="@+id/addNoteHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/adicionar_nota"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple"
+                    android:textSize="24sp" />
 
-        <!-- Botão para tirar foto -->
-        <Button
-            android:id="@+id/takePhotoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tirar_foto"
-            android:drawableEnd="@drawable/cam"
-            android:layout_below="@id/noteImageView"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/purple"
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/rounded_ripple_button_background"
-            android:layout_marginStart="16dp"/>
+                <EditText
+                    android:id="@+id/addNoteTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:hint="@string/escreva_um_t_tulo"
+                    android:padding="12dp"
+                    android:textSize="20sp"
+                    android:layout_below="@id/addNoteHeading"
+                    android:background="@drawable/purple_border"
+                    android:layout_marginTop="16dp"
+                    android:maxLines="1" />
 
-        <!-- Botão para gravar áudio -->
-        <Button
-            android:id="@+id/recordAudioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/gravar_udio"
-            android:drawableEnd="@drawable/micro"
-            android:layout_below="@id/noteImageView"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/purple"
-            android:layout_toStartOf="@id/takePhotoButton"
-            android:layout_alignParentStart="true"
-            android:background="@drawable/rounded_ripple_button_background"
-            android:layout_marginEnd="16dp"/>
+                <EditText
+                    android:id="@+id/addNoteDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/escreva_uma_descri_o"
+                    android:gravity="top"
+                    android:padding="12dp"
+                    android:textSize="18sp"
+                    android:background="@drawable/purple_border"
+                    android:layout_below="@id/addNoteTitle"
+                    android:layout_marginTop="12dp" />
 
-        <!-- Botão para reproduzir áudio -->
-        <Button
-            android:id="@+id/playAudioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ouvir_udio"
-            android:drawableEnd="@drawable/audio"
-            android:layout_below="@id/recordAudioButton"
-            android:layout_marginTop="40dp"
-            android:backgroundTint="@color/purple"
-            android:layout_alignParentStart="true"
-            android:visibility="gone"
-            android:background="@drawable/rounded_ripple_button_background"/>
+                <ImageView
+                    android:id="@+id/noteImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@id/addNoteDesc"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="@string/foto_da_nota"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
 
-        <!-- Botão para guardar nota -->
+                <Button
+                    android:id="@+id/takePhotoButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tirar_foto"
+                    android:drawableEnd="@drawable/cam"
+                    android:layout_below="@id/noteImageView"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/purple"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/rounded_ripple_button_background"
+                    android:layout_marginStart="16dp"/>
+
+                <Button
+                    android:id="@+id/recordAudioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gravar_udio"
+                    android:drawableEnd="@drawable/micro"
+                    android:layout_below="@id/noteImageView"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/purple"
+                    android:layout_toStartOf="@id/takePhotoButton"
+                    android:layout_alignParentStart="true"
+                    android:background="@drawable/rounded_ripple_button_background"
+                    android:layout_marginEnd="16dp"/>
+
+                <Button
+                    android:id="@+id/playAudioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ouvir_udio"
+                    android:drawableEnd="@drawable/audio"
+                    android:layout_below="@id/recordAudioButton"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/purple"
+                    android:layout_alignParentStart="true"
+                    android:visibility="gone"
+                    android:background="@drawable/rounded_ripple_button_background"/>
+
+            </RelativeLayout>
+        </ScrollView>
+
         <Button
             android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/guardar_nota"
+            android:text="@string/guardar_nota_add"
             android:drawableEnd="@drawable/save"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="55dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="40dp"
             android:background="@drawable/rounded_ripple_button_background"
-            android:backgroundTint="@color/purple" />
+            android:backgroundTint="@color/purple"
+            android:textColor="@color/white"/>
 
-    </RelativeLayout>
-</layout>
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
