@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- Item de menu para salvar -->
     <item
-        android:id="@+id/deleteMenu"
-        android:icon="@drawable/bin"
-        android:title=""
-        app:showAsAction="always"/>
+        android:id="@+id/saveMenu"
+        android:title="@string/guardar"
+        app:showAsAction="ifRoom" />
 </menu>

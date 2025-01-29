@@ -21,6 +21,9 @@ import pt.ipt.dam.noteplus.data.SessionManager
 import pt.ipt.dam.noteplus.data.SheetyApi
 import pt.ipt.dam.noteplus.model.Note
 
+/**
+ * Fragmento da homepage que exibe a lista de notas.
+ */
 @Suppress("DEPRECATION")
 class HomeFragment : Fragment(R.layout.home_fragment) {
 
@@ -59,6 +62,9 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         loadNotes()
     }
 
+    /**
+     * Carrega as notas do utilizador.
+     */
     private fun loadNotes() {
         val repository = NoteRepository(SheetyApi.service)
         val userId = SessionManager.userId ?: run {
@@ -78,6 +84,9 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         }
     }
 
+    /**
+     * Atualiza a interface do utilizador com as notas fornecidas.
+     */
     private fun updateUI(notes: List<Note>) {
         noteAdapter.updateNotes(notes)
 
@@ -92,7 +101,9 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         }
     }
 
-    //para ficar dinâmico e o utilizador não ter de esperar pelo get das notas
+    /**
+     * Remove a nota localmente, atualizando a lista exibida ao utilizador.
+     */
     private fun deleteNoteLocal(noteId: Int) {
         val noteIndex = allNotes.indexOfFirst { it.id == noteId }
         if (noteIndex != -1) {
@@ -102,6 +113,9 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         filterNotes(currentSearchQuery)
     }
 
+    /**
+     * Remove a nota do servidor e atualiza a lista localmente após a exclusão bem-sucedida.
+     */
     private fun deleteNote(noteId: Int) {
         lifecycleScope.launch {
             try {
@@ -137,9 +151,11 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-
     private var currentSearchQuery: String? = null
 
+    /**
+     * Filtra as notas com base na consulta de pesquisa fornecida.
+     */
     private fun filterNotes(query: String?) {
 
         currentSearchQuery = query

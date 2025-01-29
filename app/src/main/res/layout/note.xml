@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- CardView para a nota -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -10,10 +11,12 @@
         app:cardElevation="6dp"
         app:cardCornerRadius="10dp">
 
+        <!-- FrameLayout para conteúdo da nota -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!-- LinearLayout com o título, descrição e imagem da nota -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -21,6 +24,7 @@
                 android:background="@drawable/purple_border"
                 android:padding="16dp">
 
+                <!-- Título da nota -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -30,6 +34,7 @@
                     android:textStyle="bold"
                     android:textSize="18sp"/>
 
+                <!-- Descrição da nota -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -40,6 +45,7 @@
                     android:textSize="14sp"
                     android:textColor="@color/purple"/>
 
+                <!-- Imagem da nota -->
                 <ImageView
                     android:id="@+id/noteImageView"
                     android:layout_width="match_parent"
@@ -51,6 +57,7 @@
 
             </LinearLayout>
 
+            <!-- Botão flutuante para marcar como concluído -->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/doneButton"
                 android:layout_width="55dp"

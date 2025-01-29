@@ -3,13 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Layout principal do fragmento de registo -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".RegisterFragment"
         android:padding="12dp">
 
-        <!-- Logo da app -->
+        <!-- Logo da aplicação -->
         <ImageView
             android:id="@+id/appLogo"
             android:layout_width="100dp"
@@ -20,6 +21,7 @@
             android:src="@drawable/logo"
             android:contentDescription="Logo da App" />
 
+        <!-- Título "Registo" -->
         <TextView
             android:id="@+id/registerHeading"
             android:layout_width="wrap_content"
@@ -32,6 +34,7 @@
             android:textSize="35sp"
             android:textStyle="bold" />
 
+        <!-- Formulário de registo -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,6 +42,7 @@
             android:layout_marginTop="24dp"
             android:orientation="vertical">
 
+            <!-- Campo para inserir o nome -->
             <EditText
                 android:id="@+id/registerNome"
                 android:layout_width="match_parent"
@@ -49,6 +53,7 @@
                 android:background="@drawable/purple_border"
                 android:maxLines="1" />
 
+            <!-- Campo para inserir a password -->
             <EditText
                 android:id="@+id/registerPassword"
                 android:layout_width="match_parent"
@@ -61,6 +66,7 @@
                 android:maxLines="1"
                 android:inputType="textPassword" />
 
+            <!-- Campo para confirmar a password -->
             <EditText
                 android:id="@+id/registerConfirmPassword"
                 android:layout_width="match_parent"
@@ -73,6 +79,7 @@
                 android:maxLines="1"
                 android:inputType="textPassword" />
 
+            <!-- Botão de registo -->
             <Button
                 android:id="@+id/registerButton"
                 android:layout_width="wrap_content"
@@ -81,8 +88,9 @@
                 android:backgroundTint="@color/purple"
                 android:layout_gravity="center"
                 android:layout_marginTop="35dp"
-                android:background="@drawable/rounded_ripple_button_background" />/>
+                android:background="@drawable/rounded_ripple_button_background" />
 
+            <!-- Link para login, se o utilizador já tiver conta -->
             <TextView
                 android:id="@+id/registerLink"
                 android:layout_width="wrap_content"

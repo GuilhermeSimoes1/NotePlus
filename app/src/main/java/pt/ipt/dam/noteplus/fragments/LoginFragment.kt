@@ -16,6 +16,9 @@ import pt.ipt.dam.noteplus.data.SessionManager
 import pt.ipt.dam.noteplus.data.SheetyApi
 import pt.ipt.dam.noteplus.data.UserRepository
 
+/**
+ * Fragmento para a tela de login.
+ */
 class LoginFragment : Fragment(R.layout.login) {
 
     override fun onCreateView(
@@ -41,6 +44,13 @@ class LoginFragment : Fragment(R.layout.login) {
         }
     }
 
+    /**
+     * Realiza o login do utilizador com base no nome de utilizador e senha fornecidos.
+     * Armazena as informações do utilizador no SessionManager e navega para o HomeFragment em caso de sucesso.
+     *
+     * @param username Nome de utilizador fornecido.
+     * @param password Senha fornecida.
+     */
     private fun loginUser(username: String, password: String) {
         val repository = UserRepository(SheetyApi.service)
         lifecycleScope.launch {

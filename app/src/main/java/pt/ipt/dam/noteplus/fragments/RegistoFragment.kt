@@ -16,6 +16,9 @@ import pt.ipt.dam.noteplus.data.SheetyApi
 import pt.ipt.dam.noteplus.data.UserRepository
 import pt.ipt.dam.noteplus.model.User
 
+/**
+ * Fragmento para a tela de registo de utilizadores.
+ */
 class RegistoFragment : Fragment(R.layout.registo) {
 
     override fun onCreateView(
@@ -48,6 +51,13 @@ class RegistoFragment : Fragment(R.layout.registo) {
         }
     }
 
+    /**
+     * Regista um novo utilizador com base no nome de utilizador e senha fornecidos.
+     * Exibe uma mensagem de sucesso ou erro consoante o resultado do registo.
+     *
+     * @param username Nome de utilizador fornecido.
+     * @param password Senha fornecida.
+     */
     private fun registerUser(username: String, password: String) {
         val user = User(username = username, password = password)
 
