@@ -42,7 +42,7 @@ interface SheetyService {
     /**
      * Cria uma nova nota.
      *
-     * @param noteRequest Requisição contendo a nota a ser criada.
+     * @param noteRequest Requisição que contém a nota a ser criada.
      * @return Nota criada.
      */
     @POST("notes")
@@ -52,7 +52,7 @@ interface SheetyService {
      * Atualiza uma nota existente.
      *
      * @param id ID da nota a ser atualizada.
-     * @param noteRequest Requisição contendo a nota a ser atualizada.
+     * @param noteRequest Requisição que contém a nota a ser atualizada.
      * @return Nota atualizada.
      */
     @PUT("notes/{id}")
@@ -89,7 +89,7 @@ interface SheetyService {
     /**
      * Obtém todos os utilizadores.
      *
-     * @return Resposta contendo a lista de utilizadores.
+     * @return Resposta que contém a lista de utilizadores.
      */
     @GET("users/")
     suspend fun getUsers(): UserResponse
@@ -97,7 +97,7 @@ interface SheetyService {
     /**
      * Cria um novo utilizador.
      *
-     * @param userRequest Requisição contendo o utilizador a ser criado.
+     * @param userRequest Requisição que contém o utilizador a ser criado.
      * @return Utilizador criado.
      */
     @POST("users/")

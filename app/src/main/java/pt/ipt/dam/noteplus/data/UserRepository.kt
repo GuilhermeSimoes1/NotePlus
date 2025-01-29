@@ -3,7 +3,7 @@ package pt.ipt.dam.noteplus.data
 import pt.ipt.dam.noteplus.model.User
 
 /**
- * Repositório para gerir as operações de utilizadores usando o SheetyService.
+ * Repositório para gerir as operações dos utilizadores com o uso do SheetyService.
  *
  * @property sheetyService Serviço utilizado para interagir com a API do Sheety.
  */

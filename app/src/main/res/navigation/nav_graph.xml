@@ -11,15 +11,19 @@
         android:label="Home"
         tools:layout="@layout/home_fragment"
         tools:context="pt.ipt.dam.noteplus.fragments.HomeFragment">
+
         <!-- Ação para navegar do ecrã inicial para adicionar nota -->
         <action
             android:id="@+id/action_homeFragment_to_addNoteFragment"
             app:destination="@id/addNoteFragment" />
+
         <!-- Ação para navegar do ecrã inicial para editar nota -->
         <action
             android:id="@+id/action_homeFragment_to_editNoteFragment"
             app:destination="@id/editNoteFragment" />
+
     </fragment>
+
 
     <!-- Fragmento para adicionar nota -->
     <fragment
@@ -28,11 +32,14 @@
         android:label="Add Note"
         tools:layout="@layout/addnote_fragment"
         tools:context="pt.ipt.dam.noteplus.fragments.AddNoteFragment">
+
         <!-- Ação para navegar de adicionar nota para o ecrã inicial -->
         <action
             android:id="@+id/addNoteFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+
     </fragment>
+
 
     <!-- Fragmento para editar nota -->
     <fragment
@@ -41,11 +48,14 @@
         android:label="Edit Note"
         tools:layout="@layout/editnote_fragment"
         tools:context="pt.ipt.dam.noteplus.fragments.EditNoteFragment">
+
         <!-- Ação para navegar de editar nota para o ecrã inicial -->
         <action
             android:id="@+id/editNoteFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+
     </fragment>
+
 
     <!-- Fragmento para login -->
     <fragment
@@ -53,15 +63,19 @@
         android:name="pt.ipt.dam.noteplus.fragments.LoginFragment"
         android:label="Login"
         tools:layout="@layout/login">
+
         <!-- Ação para navegar de login para registo -->
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+
         <!-- Ação para navegar de login para o ecrã inicial -->
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+
     </fragment>
+
 
     <!-- Fragmento para registo -->
     <fragment
@@ -69,9 +83,11 @@
         android:name="pt.ipt.dam.noteplus.fragments.RegistoFragment"
         android:label="Register"
         tools:layout="@layout/registo">
+
         <!-- Ação para navegar de registo para login -->
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+
     </fragment>
 </navigation>

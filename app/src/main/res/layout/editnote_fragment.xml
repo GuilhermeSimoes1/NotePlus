@@ -8,14 +8,14 @@
         tools:context=".EditNoteFragment"
         android:padding="12dp">
 
-        <!-- Texto de cabeçalho para editar nota -->
+        <!-- Texto do cabeçalho para editar nota -->
         <TextView
             android:id="@+id/editNoteHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="16dp"
-            android:text="Editar nota"
+            android:text="@string/editar_nota"
             android:textStyle="bold"
             android:textColor="@color/purple"
             android:textSize="24sp" />
@@ -25,7 +25,7 @@
             android:id="@+id/editNoteTitle"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:hint="Escreva um titulo"
+            android:hint="@string/escreva_um_titulo"
             android:padding="12dp"
             android:textSize="20sp"
             android:layout_below="@id/editNoteHeading"
@@ -38,7 +38,7 @@
             android:id="@+id/editNoteDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Escreva uma descrição"
+            android:hint="@string/escreva_uma_descri_o_edit"
             android:gravity="top"
             android:padding="12dp"
             android:textSize="18sp"
@@ -53,7 +53,7 @@
             android:layout_height="200dp"
             android:layout_below="@id/editNoteDesc"
             android:layout_marginTop="16dp"
-            android:contentDescription="Foto da Nota"
+            android:contentDescription="@string/foto_da_nota_edit"
             android:scaleType="centerCrop"
             android:visibility="gone" />
 
@@ -62,7 +62,7 @@
             android:id="@+id/playAudioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ouvir Áudio"
+            android:text="@string/ouvir_audio_edit"
             android:drawableEnd="@drawable/audio"
             android:layout_below="@id/noteImageView"
             android:layout_marginTop="16dp"
@@ -74,28 +74,30 @@
             android:id="@+id/backToHomeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Voltar"
+            android:text="@string/voltar"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:backgroundTint="@color/purple"
             android:layout_marginStart="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="60dp"
             android:background="@drawable/rounded_ripple_button_background"/>
 
         <!-- Botão de ação flutuante para editar a nota -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/editNoteFab"
+        <Button
+            android:id="@+id/saveChangesButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="60dp"
             android:clickable="true"
+            android:focusable="true"
             android:backgroundTint="@color/purple"
-            android:tintMode="@color/white"
-            android:src="@drawable/edit"
+            android:text="Guardar as alterações"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:contentDescription="editFab" />
+            android:background="@drawable/rounded_ripple_button_background" />
+
+
 
     </RelativeLayout>
 </layout>

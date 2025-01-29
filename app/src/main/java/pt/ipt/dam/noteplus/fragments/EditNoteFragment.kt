@@ -19,7 +19,6 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import pt.ipt.dam.noteplus.R
 import pt.ipt.dam.noteplus.data.NoteRepository
@@ -42,6 +41,7 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
     private var mediaPlayer: MediaPlayer? = null
     private lateinit var playAudioButton: Button
     private lateinit var backToHomeButton: Button
+    private lateinit var saveChangesButton: Button
     private var audioFilePath: String? = null
     private var originalTitle: String? = null
     private var originalDescription: String? = null
@@ -65,11 +65,9 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         playAudioButton = view.findViewById(R.id.playAudioButton) // Inicialize o botão de reprodução de áudio
         backToHomeButton = view.findViewById(R.id.backToHomeButton)
         // Configurar o FAB (Floating Action Button) para salvar as alterações
-        val editNoteFab = view.findViewById<FloatingActionButton>(R.id.editNoteFab)
-        editNoteFab.setOnClickListener {
-            Log.d("EditNoteFragment", "Botão editNoteFab clicado")
-            updateNote() // Chama a função para atualizar a nota
-        }
+        saveChangesButton = view.findViewById(R.id.saveChangesButton)
+
+
 
         // Configurar o ImageView para tirar uma nova foto
         noteImageView.setOnClickListener {
@@ -79,6 +77,10 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         // Configurar o botão de reprodução de áudio
         playAudioButton.setOnClickListener {
             playAudio()
+        }
+
+        saveChangesButton.setOnClickListener{
+            updateNote()
         }
 
         // Configurar o botão de voltar à homepage

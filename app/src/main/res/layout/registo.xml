@@ -19,7 +19,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:src="@drawable/logo"
-            android:contentDescription="Logo da App" />
+            android:contentDescription="@string/logo_da_app" />
 
         <!-- Título "Registo" -->
         <TextView
@@ -29,7 +29,7 @@
             android:layout_below="@id/appLogo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
-            android:text="Registo"
+            android:text="@string/registo"
             android:textColor="@color/purple"
             android:textSize="35sp"
             android:textStyle="bold" />
@@ -58,7 +58,7 @@
                 android:id="@+id/registerPassword"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:padding="12dp"
                 android:textSize="20sp"
                 android:background="@drawable/purple_border"
@@ -71,7 +71,7 @@
                 android:id="@+id/registerConfirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:hint="Confirmar Password"
+                android:hint="@string/confirmar_password"
                 android:padding="12dp"
                 android:textSize="20sp"
                 android:background="@drawable/purple_border"
@@ -84,7 +84,7 @@
                 android:id="@+id/registerButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Registar"
+                android:text="@string/registar"
                 android:backgroundTint="@color/purple"
                 android:layout_gravity="center"
                 android:layout_marginTop="35dp"
@@ -94,11 +94,12 @@
             <TextView
                 android:id="@+id/registerLink"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Já tem uma conta? Clique aqui"
+                android:layout_height="48dp"
+                android:text="@string/j_tem_uma_conta_clique_aqui"
                 android:textColor="@color/purple"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
+                android:textSize="18sp"
                 android:clickable="true"
                 android:focusable="true" />
 

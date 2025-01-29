@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/noteTitle"
                     android:textColor="@color/purple"
-                    android:text="Titulo"
+                    android:text="@string/titulo"
                     android:textStyle="bold"
                     android:textSize="18sp"/>
 
@@ -41,7 +41,7 @@
                     android:id="@+id/noteDesc"
                     android:layout_marginTop="8dp"
                     android:maxHeight="170dp"
-                    android:text="Descrição"
+                    android:text="@string/descri_o"
                     android:textSize="14sp"
                     android:textColor="@color/purple"/>
 
@@ -53,7 +53,7 @@
                     android:layout_marginTop="8dp"
                     android:scaleType="fitCenter"
                     android:visibility="gone"
-                    android:contentDescription="Foto da Nota" />
+                    android:contentDescription="@string/foto_da_nota_note" />
 
             </LinearLayout>
 
@@ -65,7 +65,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_margin="12dp"
                 app:srcCompat="@drawable/done"
-                android:contentDescription="Marcar como concluído"
+                android:contentDescription="@string/marcar_como_conclu_do"
                 app:backgroundTint="@color/purple" />
         </FrameLayout>
 

@@ -43,6 +43,7 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
     private var imageFile: File? = null
     private lateinit var noteImageView: ImageView
     private lateinit var playAudioButton: Button
+    private lateinit var saveButton: Button
     private var isRecording = false
 
     override fun onCreateView(
@@ -53,6 +54,7 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
 
         noteImageView = view.findViewById(R.id.noteImageView)
         playAudioButton = view.findViewById(R.id.playAudioButton)
+        saveButton = view.findViewById(R.id.saveButton)
 
         view.findViewById<Button>(R.id.recordAudioButton).setOnClickListener {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
@@ -76,6 +78,10 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
 
         playAudioButton.setOnClickListener {
             playAudio()
+        }
+
+        saveButton.setOnClickListener{
+            saveNote()
         }
 
         setHasOptionsMenu(true)

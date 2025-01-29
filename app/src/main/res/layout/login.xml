@@ -29,7 +29,7 @@
             android:layout_below="@id/appLogo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
-            android:text="Login"
+            android:text="@string/login_login"
             android:textStyle="bold"
             android:textColor="@color/purple"
             android:textSize="35sp" />
@@ -42,6 +42,7 @@
             android:layout_marginTop="24dp"
             android:orientation="vertical">
 
+            <!-- Nome do utilizador -->
             <EditText
                 android:id="@+id/loginNome"
                 android:layout_width="match_parent"
@@ -52,6 +53,7 @@
                 android:background="@drawable/purple_border"
                 android:maxLines="1" />
 
+            <!-- Password do utilizador -->
             <EditText
                 android:id="@+id/loginPassword"
                 android:layout_width="match_parent"
@@ -64,6 +66,7 @@
                 android:maxLines="1"
                 android:inputType="textPassword" />
 
+            <!-- Botão de login -->
             <Button
                 android:id="@+id/loginButton"
                 android:layout_width="wrap_content"
@@ -74,16 +77,19 @@
                 android:backgroundTint="@color/purple"
                 android:background="@drawable/rounded_ripple_button_background" />
 
+            <!-- Link do login para o registo -->
             <TextView
                 android:id="@+id/registerLink"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:text="@string/sem_conta"
                 android:textColor="@color/purple"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:textSize="18sp"
+                android:gravity="center_vertical" />
         </LinearLayout>
     </RelativeLayout>
 </layout>
