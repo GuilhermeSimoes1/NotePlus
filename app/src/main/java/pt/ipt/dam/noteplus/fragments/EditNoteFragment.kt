@@ -32,9 +32,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-/**
- * Fragmento para editar notas.
- */
 @Suppress("DEPRECATION")
 class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
     private var noteId: Int? = null
@@ -67,7 +64,6 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         noteImageView = view.findViewById(R.id.noteImageView)
         playAudioButton = view.findViewById(R.id.playAudioButton) // Inicialize o botão de reprodução de áudio
         backToHomeButton = view.findViewById(R.id.backToHomeButton)
-
         // Configurar o FAB (Floating Action Button) para salvar as alterações
         val editNoteFab = view.findViewById<FloatingActionButton>(R.id.editNoteFab)
         editNoteFab.setOnClickListener {
@@ -92,6 +88,8 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
             } else {
                 findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
             }
+
+
         }
 
         // Obter o ID da nota passada como argumento
@@ -102,13 +100,11 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
         loadNote()
     }
 
+
     private val repository by lazy {
         NoteRepository(SheetyApi.service)
     }
 
-    /**
-     * Carrega os dados da nota para edição.
-     */
     private fun loadNote() {
         lifecycleScope.launch {
             noteId?.let { id ->
@@ -162,154 +158,127 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
             else -> super.onOptionsItemSelected(item)
         }
     }
-}
-/**
- * Atualiza a nota com as informações introduzidas pelo utilizador.
- * Verifica se os campos título e descrição não estão vazios antes de atualizar.
- * Exibe uma mensagem de sucesso ou erro consoante o resultado da atualização.
- */
-private fun updateNote() {
-    val title = noteTitle.text.toString()
-    val description = noteDesc.text.toString()
 
-    if (title.isEmpty() || description.isEmpty()) {
-        Toast.makeText(
-            requireContext(),
-            "Título e descrição não podem estar vazios",
-            Toast.LENGTH_SHORT
-        ).show()
-        return
-    }
+    private fun updateNote() {
+        val title = noteTitle.text.toString()
+        val description = noteDesc.text.toString()
 
-    val note = Note(
-        id = noteId!!,
-        userId = SessionManager.userId ?: 0,
-        title = title,
-        description = description,
-        imagePath = imageFile?.absolutePath,
-        audioPath = audioFilePath
-    )
-
-    lifecycleScope.launch {
-        try {
-            Log.d("EditNoteFragment", "A atualizar a nota via NoteRepository: $note")
-            repository.updateNoteInSheety(note)
-            Toast.makeText(requireContext(), "Nota atualizada com sucesso!!", Toast.LENGTH_SHORT).show()
-            findNavController().popBackStack()
-        } catch (e: Exception) {
-            Log.e("EditNoteFragment", "Erro ao atualizar a nota", e)
-            Toast.makeText(requireContext(), "Erro ao atualizar a nota", Toast.LENGTH_SHORT).show()
+        if (title.isEmpty() || description.isEmpty()) {
+            Toast.makeText(
+                requireContext(),
+                "Título e descrição não podem estar vazios",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
         }
-    }
-}
 
-/**
- * Inicia a captura de uma nova fotografia, salvando-a com um nome único.
- * Usa FileProvider para criar um URI seguro para o arquivo de imagem.
- * Verifica se existe uma Activity que pode lidar com a intenção de captura de imagem.
- */
-@SuppressLint("QueryPermissionsNeeded")
-private fun takePhoto() {
-    val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val note = Note(
+            id = noteId!!,
+            userId = SessionManager.userId ?: 0,
+            title = title,
+            description = description,
+            imagePath = imageFile?.absolutePath,
+            audioPath = audioFilePath
+        )
 
-    // Cria o arquivo de imagem com um nome único
-    val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-    imageFile = File(requireContext().externalCacheDir?.absolutePath + "/photo_$timeStamp.jpg")
-
-    // Usar FileProvider para criar um URI seguro
-    val photoURI: Uri = FileProvider.getUriForFile(
-        requireContext(),
-        "pt.ipt.dam.noteplus.fileprovider", // Nome do seu provider no AndroidManifest
-        imageFile!!
-    )
-
-    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-
-    // Verifica se há uma Activity que pode lidar com a intenção
-    if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
-        startActivityForResult(takePictureIntent, 3)
-    } else {
-        Toast.makeText(requireContext(), "Não foi possível aceder à câmera.", Toast.LENGTH_SHORT).show()
-    }
-}
-
-/**
- * Reproduz o ficheiro de áudio associado à nota.
- * Exibe uma mensagem em caso de sucesso ou erro na reprodução do áudio.
- */
-private fun playAudio() {
-    mediaPlayer = MediaPlayer().apply {
-        try {
-            setDataSource(audioFilePath)
-            prepare()
-            start()
-            Toast.makeText(requireContext(), "A reproduzir o áudio", Toast.LENGTH_SHORT).show()
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Toast.makeText(requireContext(), "Erro ao reproduzir áudio", Toast.LENGTH_SHORT).show()
-        }
-    }
-}
-
-/**
- * Manipula o resultado da captura de imagem.
- * Exibe a imagem capturada no ImageView se a captura for bem-sucedida.
- */
-@Deprecated("Deprecated in Java")
-override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
-    if (requestCode == 3 && resultCode == AppCompatActivity.RESULT_OK) {
-        // A imagem já foi salva no arquivo imageFile
-        noteImageView.visibility = View.VISIBLE
-        val bitmap = BitmapFactory.decodeFile(imageFile?.absolutePath)
-        noteImageView.setImageBitmap(bitmap)
-    }
-}
-
-/**
- * Apaga a nota atual.
- * Exibe uma mensagem de sucesso ou erro consoante o resultado da operação.
- */
-private fun deleteNote() {
-    lifecycleScope.launch {
-        try {
-            noteId?.let {
-                SheetyApi.service.deleteNote(it)
-                Toast.makeText(requireContext(), "Nota apagada com sucesso", Toast.LENGTH_SHORT).show()
+        lifecycleScope.launch {
+            try {
+                Log.d("EditNoteFragment", "A atualizar a nota via NoteRepository: $note")
+                repository.updateNoteInSheety(note)
+                Toast.makeText(requireContext(), "Nota atualizada com sucesso!!", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
+            } catch (e: Exception) {
+                Log.e("EditNoteFragment", "Erro ao atualizar a nota", e)
+                Toast.makeText(requireContext(), "Erro ao atualizar a nota", Toast.LENGTH_SHORT).show()
             }
-        } catch (e: Exception) {
-            Log.e("EditNoteFragment", "Erro ao apagar a nota", e)
-            Toast.makeText(requireContext(), "Erro ao apagar a nota", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    @SuppressLint("QueryPermissionsNeeded")
+    private fun takePhoto() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        // Cria o arquivo de imagem com um nome único
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        imageFile = File(requireContext().externalCacheDir?.absolutePath + "/photo_$timeStamp.jpg")
+
+        // Usar FileProvider para criar um URI seguro
+        val photoURI: Uri = FileProvider.getUriForFile(
+            requireContext(),
+            "pt.ipt.dam.noteplus.fileprovider", // Nome do seu provider no AndroidManifest
+            imageFile!!
+        )
+
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+
+        // Verifica se há uma Activity que pode lidar com a intenção
+        if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivityForResult(takePictureIntent, 3)
+        } else {
+            Toast.makeText(requireContext(), "Não foi possível aceder à câmera.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun playAudio() {
+        mediaPlayer = MediaPlayer().apply {
+            try {
+                setDataSource(audioFilePath)
+                prepare()
+                start()
+                Toast.makeText(requireContext(), "A reproduzir o áudio", Toast.LENGTH_SHORT).show()
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Erro ao reproduzir áudio", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 3 && resultCode == AppCompatActivity.RESULT_OK) {
+            // A imagem já foi salva no arquivo imageFile
+            noteImageView.visibility = View.VISIBLE
+            val bitmap = BitmapFactory.decodeFile(imageFile?.absolutePath)
+            noteImageView.setImageBitmap(bitmap)
+        }
+    }
+
+    private fun deleteNote() {
+
+        lifecycleScope.launch {
+            try {
+                noteId?.let {
+                    SheetyApi.service.deleteNote(it)
+                    Toast.makeText(requireContext(), "Nota apagada com sucesso", Toast.LENGTH_SHORT).show()
+                    findNavController().popBackStack()
+                }
+            } catch (e: Exception) {
+                Log.e("EditNoteFragment", "Erro ao apagar a nota", e)
+                Toast.makeText(requireContext(), "Erro ao apagar a nota", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
+            }
+        }
+    }
+
+    private fun hasChanges(): Boolean {
+        val currentTitle = noteTitle.text.toString()
+        val currentDescription = noteDesc.text.toString()
+        val currentImagePath = imageFile?.absolutePath
+        return currentTitle != originalTitle || currentDescription != originalDescription || currentImagePath != originalImagePath
+    }
+
+
+    private fun showDiscardChangesDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Descartar alterações?")
+        builder.setMessage("Você tem alterações que não foram guardadas. Deseja descartá-las e voltar à página inicial?")
+        builder.setPositiveButton("Descartar") { _, _ ->
             findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
         }
+        builder.setNegativeButton("Continuar a editar") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.show()
     }
-}
-
-/**
- * Verifica se houve alterações na nota atual em comparação com os dados originais.
- * @return true se houve alterações, false caso contrário.
- */
-private fun hasChanges(): Boolean {
-    val currentTitle = noteTitle.text.toString()
-    val currentDescription = noteDesc.text.toString()
-    val currentImagePath = imageFile?.absolutePath
-    return currentTitle != originalTitle || currentDescription != originalDescription || currentImagePath != originalImagePath
-}
-
-/**
- * Exibe um diálogo de confirmação para descartar as alterações não guardadas.
- * Navega de volta para a página inicial se o utilizador confirmar.
- */
-private fun showDiscardChangesDialog() {
-    val builder = AlertDialog.Builder(requireContext())
-    builder.setTitle("Descartar alterações?")
-    builder.setMessage("Você tem alterações que não foram guardadas. Deseja descartá-las e voltar à página inicial?")
-    builder.setPositiveButton("Descartar") { _, _ ->
-        findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
-    }
-    builder.setNegativeButton("Continuar a editar") { dialog, _ ->
-        dialog.dismiss()
-    }
-    builder.show()
 }
