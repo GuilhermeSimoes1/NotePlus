@@ -72,6 +72,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:layout_marginTop="35dp"
                 android:backgroundTint="@color/purple"
@@ -90,6 +92,20 @@
                 android:focusable="true"
                 android:textSize="18sp"
                 android:gravity="center_vertical" />
+
+            <TextView
+                android:id="@+id/infoLink"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="@string/sobre_o_projeto"
+                android:textColor="@color/purple"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:textStyle="bold" />
         </LinearLayout>
     </RelativeLayout>
 </layout>

@@ -43,6 +43,11 @@ class LoginFragment : Fragment(R.layout.login) {
         registerLink.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
+
+        val infoLink = view.findViewById<TextView>(R.id.infoLink)
+        infoLink.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_InfoFragment)
+        }
     }
 
     /**

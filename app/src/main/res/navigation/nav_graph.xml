@@ -74,6 +74,10 @@
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
 
+        <action
+            android:id="@+id/action_loginFragment_to_InfoFragment"
+            app:destination="@id/infoPage" />
+
     </fragment>
 
 
@@ -88,6 +92,21 @@
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/infoPage"
+        android:name="pt.ipt.dam.noteplus.fragments.InfoFragment"
+        android:label="Info"
+        tools:layout="@layout/info_page">
+
+        <!-- Ação para navegar de registo para login -->
+        <action
+            android:id="@+id/action_infoFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+
+
 
     </fragment>
 </navigation>

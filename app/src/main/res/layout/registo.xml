@@ -85,6 +85,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/registar"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 android:backgroundTint="@color/purple"
                 android:layout_gravity="center"
                 android:layout_marginTop="35dp"

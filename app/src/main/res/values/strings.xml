@@ -40,4 +40,10 @@
     <string name="guardar_altera_es">Guardar alterações</string>
     <string name="guardar_nota_add">Guardar Nota</string>
     <string name="guardar_as_altera_es">Guardar as alterações</string>
+    <string name="about_us">Sobre o projeto</string>
+    <string name="course_info">Este trabalho foi desenvolvido por dois estudantes do Instituto Politécnico de Tomar, do curso de Engenharia Informática, para a unidade curricular de Desenvolvimento de Aplicações Móveis, no ano letivo de 2024/2025.</string>
+    <string name="info_sobre_autores">Jorge Escarameia - Nº2287\nGuilherme Simões - Nº25259</string>
+    <string name="bibliotecas">Bibliotecas utilizadas:\n\n- AndroidX\n\n- Material Components (Botões do Google Material Design)\n\n- Navigation Component (Usado para a navegação entre páginas)\n\n- Retrofit (Para comunicação com a API)\n\n- Gson (Para a conversão de JSON)</string>
+    <string name="sobre_o_projeto">Sobre o projeto</string>
+    <string name="voltar_para_o_login">Voltar para o login</string>
 </resources>
