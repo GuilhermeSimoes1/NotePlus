@@ -15,6 +15,7 @@ import pt.ipt.dam.noteplus.R
 import pt.ipt.dam.noteplus.data.SheetyApi
 import pt.ipt.dam.noteplus.data.UserRepository
 import pt.ipt.dam.noteplus.model.User
+import java.security.MessageDigest
 
 /**
  * Fragmento para a tela de registo de utilizadores.
@@ -51,6 +52,24 @@ class RegistoFragment : Fragment(R.layout.registo) {
         }
     }
 
+
+
+    /**
+     * Gera um hash SHA-256 a partir da senha fornecida.
+     *
+     * Esta função utiliza o algoritmo SHA-256 para gerar um hash a partir da senha fornecida.
+     * O hash gerado é retornado como uma string hexadecimal.
+     *
+     * @param password A senha a ser convertida em hash.
+     * @return A senha convertida num hash SHA-256 representado como uma string hexadecimal.
+     */
+
+    fun hashPassword(password: String): String {
+        val bytes = MessageDigest.getInstance("SHA-256").digest(password.toByteArray())
+        return bytes.joinToString("") { "%02x".format(it) }
+    }
+
+
     /**
      * Regista um novo utilizador com base no nome de utilizador e senha fornecidos.
      * Exibe uma mensagem de sucesso ou erro consoante o resultado do registo.
@@ -59,7 +78,8 @@ class RegistoFragment : Fragment(R.layout.registo) {
      * @param password Senha fornecida.
      */
     private fun registerUser(username: String, password: String) {
-        val user = User(username = username, password = password)
+        val hashedPassword = hashPassword(password)
+        val user = User(username = username, password = hashedPassword)
 
         val repository = UserRepository(SheetyApi.service)
         lifecycleScope.launch {
