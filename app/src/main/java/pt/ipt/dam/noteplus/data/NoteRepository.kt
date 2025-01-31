@@ -45,4 +45,14 @@ class NoteRepository(private val sheetyService: SheetyService) {
         val noteRequest = SheetyService.NoteRequest(note)
         note.id?.let { sheetyService.updateNote(it, noteRequest) }
     }
+
+
+
+    suspend fun deleteNoteInSheety(noteId: Int) {
+        val response = sheetyService.deleteNote(noteId)
+
+        if (!response.isSuccessful) {
+            throw Exception("Erro ao apagar a nota. Código HTTP: ${response.code()}")
+        }
+    }
 }

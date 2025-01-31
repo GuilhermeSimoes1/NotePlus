@@ -86,7 +86,6 @@
                     android:backgroundTint="@color/purple"
                     android:background="@drawable/rounded_ripple_button_background"
                     android:padding="12dp"
-                    android:textSize="18sp"
                     android:textStyle="bold" />
 
             </LinearLayout>

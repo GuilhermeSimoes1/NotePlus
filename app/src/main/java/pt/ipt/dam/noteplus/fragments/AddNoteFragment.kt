@@ -10,6 +10,7 @@ import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
@@ -22,7 +23,9 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pt.ipt.dam.noteplus.R
 import pt.ipt.dam.noteplus.data.NoteRepository
 import pt.ipt.dam.noteplus.data.SessionManager
@@ -138,10 +141,14 @@ class AddNoteFragment : Fragment(R.layout.addnote_fragment) {
         lifecycleScope.launch {
             try {
                 repository.createNoteInSheety(note)
-                Toast.makeText(requireContext(), "Nota criada com sucesso!!",Toast.LENGTH_SHORT).show()
-                findNavController().popBackStack()
+                Toast.makeText(requireContext(), "Nota criada com sucesso!!", Toast.LENGTH_SHORT).show()
+
+                withContext(Dispatchers.Main) {
+                    findNavController().navigate(R.id.addNoteFragment_to_homeFragment)
+                }
+
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e("SaveNote", "Erro ao guardar a nota", e)
                 Toast.makeText(requireContext(), "Erro ao guardar a nota :(", Toast.LENGTH_SHORT).show()
             }
         }

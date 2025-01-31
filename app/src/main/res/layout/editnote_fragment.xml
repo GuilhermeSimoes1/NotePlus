@@ -77,7 +77,6 @@
             android:layout_height="wrap_content"
             android:text="@string/voltar"
             android:textStyle="bold"
-            android:textSize="18sp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:backgroundTint="@color/purple"
@@ -97,7 +96,6 @@
             android:backgroundTint="@color/purple"
             android:text="@string/guardar_as_altera_es"
             android:textStyle="bold"
-            android:textSize="18sp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:background="@drawable/rounded_ripple_button_background" />

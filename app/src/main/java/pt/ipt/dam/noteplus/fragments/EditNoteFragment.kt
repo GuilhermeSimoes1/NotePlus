@@ -19,7 +19,9 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pt.ipt.dam.noteplus.R
 import pt.ipt.dam.noteplus.data.NoteRepository
 import pt.ipt.dam.noteplus.data.SessionManager
@@ -197,10 +199,13 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
 
         lifecycleScope.launch {
             try {
-                Log.d("EditNoteFragment", "A atualizar a nota via NoteRepository: $note")
                 repository.updateNoteInSheety(note)
                 Toast.makeText(requireContext(), "Nota atualizada com sucesso!!", Toast.LENGTH_SHORT).show()
-                findNavController().popBackStack()
+
+                withContext(Dispatchers.Main) {
+                    findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
+                }
+
             } catch (e: Exception) {
                 Log.e("EditNoteFragment", "Erro ao atualizar a nota", e)
                 Toast.makeText(requireContext(), "Erro ao atualizar a nota", Toast.LENGTH_SHORT).show()
@@ -270,18 +275,25 @@ class EditNoteFragment : Fragment(R.layout.editnote_fragment) {
      * Elimina a nota através do seu ID com o serviço SheetyApi.
      */
     private fun deleteNote() {
+        val repository = NoteRepository(SheetyApi.service)
 
         lifecycleScope.launch {
             try {
                 noteId?.let {
-                    SheetyApi.service.deleteNote(it)
-                    Toast.makeText(requireContext(), "Nota apagada com sucesso", Toast.LENGTH_SHORT).show()
-                    findNavController().popBackStack()
+                    repository.deleteNoteInSheety(it)
+
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "Nota apagada com sucesso", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("EditNoteFragment", "Erro ao apagar a nota", e)
-                Toast.makeText(requireContext(), "Erro ao apagar a nota", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Erro ao apagar a nota", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.editNoteFragment_to_homeFragment)
+                }
             }
         }
     }

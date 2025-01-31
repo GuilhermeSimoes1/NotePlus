@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tirar_foto"
                     android:textStyle="bold"
-                    android:textSize="18sp"
+
                     android:drawableEnd="@drawable/cam"
                     android:layout_below="@id/noteImageView"
                     android:layout_marginTop="16dp"
@@ -85,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gravar_udio"
-                    android:textSize="18sp"
+
                     android:textStyle="bold"
                     android:drawableEnd="@drawable/micro"
                     android:layout_below="@id/noteImageView"
@@ -101,7 +101,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ouvir_udio"
-                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:drawableEnd="@drawable/audio"
                     android:layout_below="@id/recordAudioButton"
@@ -119,7 +118,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/guardar_nota_add"
-            android:textSize="18sp"
             android:textStyle="bold"
             android:drawableEnd="@drawable/save"
             android:layout_gravity="bottom|center_horizontal"

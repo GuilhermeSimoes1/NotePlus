@@ -64,7 +64,6 @@ class NoteAdapter(
         holder.doneNoteButton.setOnClickListener {
             note.id?.let {
                 onDoneClick(it)
-                removeNoteAt(position)
             }
         }
     }
@@ -84,16 +83,6 @@ class NoteAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    /**
-     * Remove uma nota na posição especificada.
-     *
-     * @param position Posição da nota a ser removida.
-     */
-    fun removeNoteAt(position: Int) {
-        notes.removeAt(position)
-        notifyItemRemoved(position)
-        notifyItemRangeChanged(position, notes.size)
-    }
 
     /**
      * Implementação de DiffUtil.Callback para calcular as diferenças entre listas de notas.

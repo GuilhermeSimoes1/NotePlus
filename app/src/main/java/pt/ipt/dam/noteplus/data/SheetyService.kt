@@ -64,7 +64,7 @@ interface SheetyService {
      * @param id ID da nota a ser apagada.
      */
     @DELETE("notes/{id}")
-    suspend fun deleteNote(@Path("id") id: Int)
+    suspend fun deleteNote(@Path("id") id: Int): retrofit2.Response<Unit>
 
     //::::::::::::EndPoints dos utilizadores:::::::::::://
 
@@ -108,7 +108,7 @@ interface SheetyService {
  * Objeto para configurar e fornecer o serviço Sheety.
  */
 object SheetyApi {
-    private const val BASE_URL = "https://api.sheety.co/8e8aa717d5b287e401de88d171fe8df3/notePlus/"
+    private const val BASE_URL = "https://api.sheety.co/13402998b9223ddac6b380b566ef9312/notePlus/"
 
     /**
      * Instância do serviço Sheety.
